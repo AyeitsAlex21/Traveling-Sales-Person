@@ -1,3 +1,8 @@
+import random
+from initialize import *
+import pandas as pd
+import numpy as np
+
 def selection(popRanked, eliteSize):
     """
     ([Route], int) -> [int]

@@ -1,7 +1,20 @@
+dist_mtx = [
+    [0, 5, 8, 5, 12],
+    [5, 0, 1, 3, 13],
+    [8, 1, 0, 2, 10],
+    [6, 5, 2, 0, 7],
+    [13, 13, 10, 14, 0]
+]
+"""
+Sample matrix for testing:
+5 cities (named 0-4) with distances to all others.
+Distance from city 0 to city 4 = dist_mtx[0][4]
+"""
 
 class City():
-    def __init__(self):
-        self.name
+    # changed this to accept name as input
+    def __init__(self, name):
+        self.name = name
         self.num = -1
 
     def distance(self, other):
@@ -13,7 +26,7 @@ class City():
         TODO
         NEED ADJ MATRIX TO GET DISTANCES
         """
-        return 1
+        return dist_mtx[self.name][other.name]
 
 
 class Route():
@@ -53,5 +66,5 @@ class Route():
         FITNESS MORE OFTEN.
         """
         if self.fitness == 0:
-            self.fitness = 1 / float(self.routeDistance())
+            self.fitness = 1 / float(self.route_distance())
         return self.fitness

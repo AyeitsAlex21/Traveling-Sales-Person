@@ -1,3 +1,4 @@
+from change import *
 
 """
 NOTE FOR GROUPMATES:
@@ -29,5 +30,19 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
     bestRoute = pop[bestRouteIndex]
     return bestRoute
 
+
+def test():
+    population = [City(0), City(1), City(2), City(3), City(4)]
+    popSize = 10
+    eliteSize = 5
+    mutationRate = 0.5
+    generations = 30
+    geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
+
+
 def main():
     return 0
+
+
+if __name__ == "__main__":
+    test()

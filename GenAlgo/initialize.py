@@ -1,3 +1,7 @@
+from structures import *
+import random
+import operator
+
 def initialPopulation(popSize, cityList):
     """
     (int, [City]) -> [Route]
