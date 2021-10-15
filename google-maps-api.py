@@ -15,7 +15,7 @@ def get_distance(origins, destinations):
     :param destinations: list of addresses (strings)
     :return: list of distances (ints)
     """
-    API_KEY = "AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts"  # need to hide this
+    API_KEY = ""  # need to hide this
     i = 1
     distances = []
 
