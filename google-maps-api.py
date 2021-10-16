@@ -30,7 +30,7 @@ def get_distance(origin, destination):
     found = re.search(r"\d*,*\d*", distancestr)
     distance = int(found.group().replace(",", ""))
 
-    return distance
+    return distance  # integer
 
 
 def genMatrix(addressList):
