@@ -1,45 +1,66 @@
 """
 Source Code for Google Maps API, CIS422 FA21
 Author(s): Niklaas Cotta
-Last Edited: 10/09/21
+Last Edited: 10/16/21
 Sources:
   List of APIs: https://developers.google.com/maps/documentation
   Distance Matrix Documentation: https://developers.google.com/maps/documentation/distance-matrix/start
 """
 import requests
+import re
 
 
-def get_distance(origins, destinations):
+def get_distance(origin, destination):
     """
-    :param origins: list of addresses (strings)
-    :param destinations: list of addresses (strings)
-    :return: list of distances (ints)
+    :param origin: str
+    :param destination: str
+    :return: int (distance between the two)
     """
     API_KEY = ""  # need to hide this
-    i = 1
-    distances = []
 
     # base url
-    for origin, destination in zip(origins, destinations):
-        url = f"https://maps.googleapis.com/maps/api/distancematrix/json?" \
-              f"origins={origin}&destinations={destination}" \
-              f"&units=imperial&key={API_KEY}"
+    url = f"https://maps.googleapis.com/maps/api/distancematrix/json?" \
+          f"origins={origin}&destinations={destination}" \
+          f"&units=imperial&key={API_KEY}"
 
-        # get request
-        response = requests.request("GET", url, headers={}, data={})
-        # print(response.text)
-        output = response.json()
-        distances.append(output["rows"][0]["elements"][0]["distance"]["text"])
+    response = requests.request("GET", url, headers={}, data={}).json()  # query response from google maps
+    distancestr = response["rows"][0]["elements"][0]["distance"]["text"]  # isolate .json element
 
-        # formatted output (temp)
-        print("Distance #", i)
-        print("Place of Origin:  ", output["destination_addresses"][0])
-        print("Destination:      ", output["origin_addresses"][0])
-        print("Distance between: ", output["rows"][0]["elements"][0]["distance"]["text"])
-        print("Time taken:       ", output["rows"][0]["elements"][0]["duration"]["text"])
-        print("\n")
+    # this just turns the string into integer form
+    found = re.search(r"\d*,*\d*", distancestr)
+    distance = int(found.group().replace(",", ""))
+
+    return distance
+
+
+def genMatrix(addressList):
+    """
+    :param addressList: a list of addresses, first is origin
+    :return: tuple containing list of list of distances (matrix) and list of addresses (strings)
+    """
+    matrix = []
+    n = len(addressList)
+
+    # populate initial matrix
+    for j in range(n):
+        matrix.append([])
+        for _ in range(n):
+            matrix[j].append(0)
+
+    for j in range(n):
+        for i in range(n):
+            if i != j:  # distance from x to x is 0
+                distance = get_distance(addressList[i], addressList[j])
+
+                matrix[i][j] = distance
+                matrix[j][i] = distance  # undirected graph
+
+        # print(matrix[j])
+    # print(addressList)
+
+    return addressList, matrix  # returns tuple containing address list and corresponding matrix
 
 
 if __name__ == '__main__':
     # Example
-    get_distance(["6128 Flag Point Drive, Ooltewah"], ["1710 E 15th Ave, Eugene"])
+    addresses, addressMat = genMatrix(["NYC, NY", "1710 E 15th Ave, Eugene,OR", "Cocoa Beach,FL", "Seattle, Washington"])
