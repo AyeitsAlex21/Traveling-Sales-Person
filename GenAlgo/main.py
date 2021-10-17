@@ -61,13 +61,11 @@ def test():
         [13, 13, 10, 14, 0]
     ]
     name_list = ["Zero", "One", "Two", "Three", "Four"]
-    # changed to feed city list to initial population function
-    CityList = parse_input((dist_mtx, name_list))
+    population = parse_input((dist_mtx, name_list))
     popSize = 10
     eliteSize = 5
     mutationRate = 0.5
     generations = 300
-    population = initialPopulation(popSize, CityList)
     geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
 
 
