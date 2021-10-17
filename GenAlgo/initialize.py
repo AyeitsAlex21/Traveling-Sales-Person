@@ -24,7 +24,10 @@ def createRoute(cityList):
     TODO
     MAYBE HAVE TO CHANGE SO IT DOES NOT CHANGE THE STARTING CITY
     """
-    temp = cityList[1:]
+    if(len(cityList) >= 2)
+        temp = cityList[1:]
+    else
+        temp = cityList
     route = cityList[0] + random.sample(temp, len(temp))
     return route
 
