@@ -28,7 +28,7 @@ def createRoute(cityList):
         temp = cityList[1:]
     else:
         temp = cityList
-    route = cityList[0] + random.sample(temp, len(temp))
+    route = [cityList[0]] + random.sample(temp, len(temp))
     return route
 
 def rankRoutes(population):
