@@ -1,23 +1,33 @@
 class City():
-    # changed this to accept name, num, distances as input
+    """
+    City class, used to store a location and its distances from other locations.
+    Accepts name (str), num (int), and distances (list of floats) as input.
+    """
     def __init__(self, name, num, distances):
         self.name = name
         self.num = num
         self.distances = distances
+
+    def __str__(self):
+        return "City:" + self.name
+
+    def __repr__(self):
+        return "City:" + self.name
 
     def distance(self, other):
         """
         (City) -> (float)
 
         returns the distance from the self city to the other city
-
-        TODO
-        NEED ADJ MATRIX TO GET DISTANCES
         """
         return self.distances[other.num]
 
 
 class Route():
+    """
+    Route class, used for calculating the distance and fitness of a list of Cities.
+    Accepts route (list of Cities) as input.
+    """
     def __init__(self, route):
         self.route = route
         self.distance = 0
@@ -48,10 +58,6 @@ class Route():
         () -> float
 
         Calls route distance so it can determine fitness
-
-        TODO
-        PROBABLY TAKE OUT THE IF SO WE CAN CHANGE THE ROUTE DISTANCE AND
-        FITNESS MORE OFTEN.
         """
         if self.fitness == 0:
             self.fitness = 1 / float(self.route_distance())

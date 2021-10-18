@@ -38,17 +38,21 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
     This function runs the whole Genitic Algorithm.
     """
     pop = initialPopulation(popSize, population)
-    #
+    print(rankRoutes(pop))
     print("Initial distance: " + str(1 / rankRoutes(pop)[0][1]))
+    bestSoFar = Route(pop[rankRoutes(pop)[0][0]])
 
     for i in range(0, generations):
         pop = nextGeneration(pop, eliteSize, mutationRate)
+        intermedDist = 1 / rankRoutes(pop)[0][1]
+        # if intermedDist < bestSoFar:
+        #     bestSoFar = intermedDist
+        #print("best so far: " + str(bestSoFar))
 
     print("Final distance: " + str(1 / rankRoutes(pop)[0][1]))
     bestRouteIndex = rankRoutes(pop)[0][0]
     bestRoute = pop[bestRouteIndex]
-    for city in bestRoute:
-        print(city.name)
+    print(bestRoute)
     return bestRoute
 
 
@@ -65,7 +69,7 @@ def test():
     popSize = 10
     eliteSize = 5
     mutationRate = 0.5
-    generations = 300
+    generations = 30
     geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
 
 

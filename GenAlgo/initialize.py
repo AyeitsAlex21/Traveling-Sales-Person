@@ -4,25 +4,27 @@ import operator
 
 def initialPopulation(popSize, cityList):
     """
-    (int, [City]) -> [Route]
+    (int, [City]) -> [[City]]
 
-    This function returns a list of routes the size of popSize based
+    This function returns a list of lists of cities the size of popSize based
     on the cityList.
+
+    Called by: geneticAlgorithm
     """
     population = []
 
     for i in range(0, popSize):
-        population.append(createRoute(cityList))
+        population.append(createValidCityList(cityList))
     return population
 
-def createRoute(cityList):
+def createValidCityList(cityList):
     """
-    ([City]) -> [Route]
+    ([City]) -> [City]
 
     Helper function creates a valid random route based on the city list given.
+    Keeps the first city as the first city.
 
-    TODO
-    MAYBE HAVE TO CHANGE SO IT DOES NOT CHANGE THE STARTING CITY
+    Called by: initialPopulation
     """
     if(len(cityList) >= 2):
         temp = cityList[1:]
@@ -33,10 +35,12 @@ def createRoute(cityList):
 
 def rankRoutes(population):
     """
-    ([Route]) -> [Route]
+    ([[City]]) -> [(int, float)]
 
-    Given a list of routes representing the population this function sorts the
-    population in order of shortest to farthest distances
+    Given a list of lists of cities representing the population,
+    returns a list of tuples (index of population, route fitness) sorted in decreasing order of route fitness
+
+    Called by: nextGeneration, geneticAlgorithm
     """
     fitnessResults = {}
     for i in range(0,len(population)):

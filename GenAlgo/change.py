@@ -5,11 +5,13 @@ import numpy as np
 
 def selection(popRanked, eliteSize):
     """
-    ([Route], int) -> [int]
+    ([(int, float)], int) -> [int]
 
-    Uses a sorted population list and the size we want the population
-    to shrink down to, to output a list of route ID's that represnt
-    the selected parents to mate.
+    Uses a sorted list of (index, route fitness) tuples and the size we want the population
+    to shrink down to, to output a list of indices that represent
+    the selected parents to mate in the population.
+
+    Called by: nextGeneration
     """
     selectionResults = []
     df = pd.DataFrame(np.array(popRanked), columns=["Index", "Fitness"])
@@ -28,10 +30,12 @@ def selection(popRanked, eliteSize):
 
 def matingPool(population, selectionResults):
     """
-    ([Route], [int]) -> [Route]
+    ([[City]], [int]) -> [[City]]
 
     Takes the population list and the results of the parent selection list
     to return a list of the parent Routes.
+
+    Called by: nextGeneration
     """
     matingpool = []
     for i in range(0, len(selectionResults)):
@@ -42,9 +46,11 @@ def matingPool(population, selectionResults):
 
 def breed(parent1, parent2):
     """
-    (Route, Route) -> Route
+    ([City], [City]) -> [City]
 
     Uses Genetic Edge Recombination on the two parents to output a child path.
+
+    Called by: breedPopulation
 
     //TODO:
     DOWN BELOW IS NOT THE GENETIC EDGE RECOMBINATION WE NEED TO CHANGE BUT MAYBE
@@ -71,10 +77,12 @@ def breed(parent1, parent2):
 
 def breedPopulation(matingpool, eliteSize):
     """
-    ([Route], int) -> [Route]
+    ([[City]], int) -> [[City]]
 
     Takes a list of selected parents and breeds them to output a
     list of children.
+
+    Called by: nextGeneration
     """
     children = []
     length = len(matingpool) - eliteSize
@@ -91,32 +99,32 @@ def breedPopulation(matingpool, eliteSize):
 
 def mutate(individual, mutationRate):
     """
-    (Route, float) -> Route
+    ([City], float) -> [City]
 
-    Randomly mutates the route based on the mutation rate.
+    Randomly mutates the list of cities based on the mutation rate.
 
-    TODO
-    CHANGE THE MUTATION TO THE ONE WE PRUPOSED
+    Called by: mutatePopulation
     """
-    for swapped in range(len(individual)):
-        if (random.random() < mutationRate):
-            swapWith = int(random.random() * len(individual))
+    if random.random() < mutationRate:
+        # randomly select indices greater than 0 (do not mutate first index)
+        ind1 = int(random.random() * (len(individual) - 2)) + 1
+        ind2 = ind1 + int(random.random() * (len(individual) - ind1))
 
-            city1 = individual[swapped]
-            city2 = individual[swapWith]
-
-            individual[swapped] = city2
-            individual[swapWith] = city1
+        if ind1 == ind2:
+            ind2 += 2
+        elif ind1 + 1 == ind2:
+            ind2 += 1
+        individual[ind1:ind2] = individual[ind1:ind2][::-1]
     return individual
+
 
 def mutatePopulation(population, mutationRate):
     """
-    ([Route], float) -> [Route]
+    ([[City]], float) -> [[City]]
 
     Calls the mutate function on every indivdual in the population
 
-    TODO
-    CHANGE SO IT REVALUEATES THE CHANGED INDIVIDUALS
+    Called by: nextGeneration
     """
     mutatedPop = []
 
@@ -127,10 +135,12 @@ def mutatePopulation(population, mutationRate):
 
 def nextGeneration(currentGen, eliteSize, mutationRate):
     """
-    ([Route], int, float) -> [Route]
+    ([[City]], int, float) -> [[City]]
 
     Goes through one generation of the GA based on the initial
     population given.
+
+    Called by: geneticAlgorithm
     """
     popRanked = rankRoutes(currentGen)
     selectionResults = selection(popRanked, eliteSize)
