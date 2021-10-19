@@ -9,10 +9,10 @@ class City():
         self.distances = distances
 
     def __str__(self):
-        return "City:" + self.name
+        return self.name
 
     def __repr__(self):
-        return "City:" + self.name
+        return self.name
 
     def distance(self, other):
         """
@@ -32,6 +32,9 @@ class Route():
         self.route = route
         self.distance = 0
         self.fitness = 0
+
+    def __str__(self):
+        return str(self.route)
 
     def route_distance(self):
         """
