@@ -1,5 +1,6 @@
 from change import *
 from initialize import *
+from mapsAPI import *
 
 """
 TODO:
@@ -64,6 +65,10 @@ def test():
         [30, 20, 40, 40, 30, 4, 0, 2],
         [40, 50, 40, 20, 40, 5, 2, 0]
     ]
+
+    # newAddresses = ["NYC, NY", "1710 E 15th Ave, Eugene,OR", "Cocoa Beach,FL", "Seattle, Washington"]
+    # dist_mtx, name_list = genMatrix(newAddresses)
+
     name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
     population = parse_input((dist_mtx, name_list))
     popSize = 20
