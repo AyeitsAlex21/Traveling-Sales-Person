@@ -1,39 +1,44 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-		<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
-		<meta charset="utf-8">
-		<title>Landing Page</title>
-		<style>
-		  /* Always set the map height explicitly to define the size of the div
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	<meta charset="utf-8">
+	<title>Landing Page</title>
+	<style>
+		/* Always set the map height explicitly to define the size of the div
 		   * element that contains the map. */
-		  #map {
+		#map {
 			height: 100%;
-		  }
-		  /* Optional: Makes the sample page fill the window. */
-		  html, body {
+		}
+
+		/* Optional: Makes the sample page fill the window. */
+		html,
+		body {
 			height: 100%;
 			margin: 0;
 			padding: 0;
-		  }
-		  #description {
+		}
+
+		#description {
 			font-family: Roboto;
 			font-size: 15px;
 			font-weight: 300;
-		  }
-	
-		  #infowindow-content .title {
+		}
+
+		#infowindow-content .title {
 			font-weight: bold;
-		  }
-	
-		  #infowindow-content {
+		}
+
+		#infowindow-content {
 			display: none;
-		  }
-	
-		  #map #infowindow-content {
+		}
+
+		#map #infowindow-content {
 			display: inline;
-		  }
-		  #searchTextField {
+		}
+
+		#searchTextField {
 			background-color: #fff;
 			font-family: Roboto;
 			font-size: 15px;
@@ -42,115 +47,122 @@
 			padding: 0 11px 0 13px;
 			text-overflow: ellipsis;
 			width: 400px;
-		  }
-	
-		  #searchTextField:focus {
+		}
+
+		#searchTextField:focus {
 			border-color: #4d90fe;
-		  }
-	
-		  #title {
+		}
+
+		#title {
 			color: #fff;
 			background-color: #4d90fe;
 			font-size: 25px;
 			font-weight: 500;
 			padding: 6px 12px;
-		  }
-		  #target {
+		}
+
+		#target {
 			width: 345px;
-		  }
-		</style>
+		}
+	</style>
 </head>
 
 <body>
-	<input
-      id="searchTextField"
-      class="controls"
-      type="text"
-      placeholder="Search Box"
-    />
-    <div id="map"></div>
-
-	<!--<iframe width="1500" height="1000" frameborder="0" style="border:0"
-		src="https://www.google.com/maps/embed/v1/place?key=YOUR_API_KEY&q=Eugene+OR"
-		allowfullscreen>
-	</iframe>
-
-	<iframe width="1500" height="1000" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/directions?key=YOUR_API_KEY&origin=Oslo+Norway
-  &destination=Telemark+Norway
-  &avoid=tolls|highways" allowfullscreen>
-	</iframe>-->
+	<input id="searchTextField" class="controls" type="text" placeholder="Search Box" />
+	<div id="google_map" ></div><button id="drop" onClick="addMyMarker()">Add Location</button>
+	<div id="google_map" ></div><button id="drop" onClick="deleteMyMarker()">Delete Last Location</button>
+	<div id="map"></div>
 
 	<script>
+		var title, position;
+		var markers = [];
+		var map;
 		function initialize() {
-        var map = new google.maps.Map(document.getElementById('map'), {
-          center: {lat: -33.8688, lng: 151.2195},
-          zoom: 13,
-          mapTypeId: 'roadmap'
-        });
+			map = new google.maps.Map(document.getElementById('map'), {
+				center: { lat: -33.8688, lng: 151.2195 },
+				zoom: 13,
+				mapTypeId: 'roadmap'
+			});
 
-        // Create the search box and link it to the UI element.
-        var input = document.getElementById('searchTextField');
-        var autocomplete = new google.maps.places.SearchBox(input);
-        map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+			// Create the search box and link it to the UI element.
+			var input = document.getElementById('searchTextField');
+			var autocomplete = new google.maps.places.SearchBox(input);
+			map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-        // Bias the SearchBox results towards current map's viewport.
-        map.addListener('bounds_changed', function() {
-			autocomplete.setBounds(map.getBounds());
-        });
+			// Bias the SearchBox results towards current map's viewport.
+			map.addListener('bounds_changed', function () {
+				autocomplete.setBounds(map.getBounds());
+			});
+			// Listen for the event fired when the user selects a prediction and retrieve
+			// more details for that place.
+			autocomplete.addListener('places_changed', function () {
+				var places = autocomplete.getPlaces();
 
-        var markers = [];
-        // Listen for the event fired when the user selects a prediction and retrieve
-        // more details for that place.
-        autocomplete.addListener('places_changed', function() {
-          var places = autocomplete.getPlaces();
+				if (places.length == 0) {
+					return;
+				}
 
-          if (places.length == 0) {
-            return;
-          }
+				// Clear out the old markers.
+				//markers.forEach(function(marker) {
+				//  marker.setMap(null);
+				//});
+				//markers = [];
 
-          // Clear out the old markers.
-          markers.forEach(function(marker) {
-            marker.setMap(null);
-          });
-          markers = [];
+				// For each place, get the icon, name and location.
+				var bounds = new google.maps.LatLngBounds();
+				places.forEach(function (place) {
+					title = place.name;
+					position = place.geometry.location;
+					if (!place.geometry) {
 
-          // For each place, get the icon, name and location.
-          var bounds = new google.maps.LatLngBounds();
-          places.forEach(function(place) {
-            if (!place.geometry) {
-              console.log("Returned place contains no geometry");
-              return;
-            }
-            var icon = {
-              url: place.icon,
-              size: new google.maps.Size(71, 71),
-              origin: new google.maps.Point(0, 0),
-              anchor: new google.maps.Point(17, 34),
-              scaledSize: new google.maps.Size(25, 25)
-            };
+						console.log("Returned place contains no geometry");
+						return;
+					}
+					var icon = {
+						url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+						size: new google.maps.Size(71, 71),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(17, 34),
+						scaledSize: new google.maps.Size(25, 25)
+					};
 
-            // Create a marker for each place.
-            markers.push(new google.maps.Marker({
-              map: map,
-              icon: icon,
-              title: place.name,
-              position: place.geometry.location
-            }));
+					if (place.geometry.viewport) {
+						// Only geocodes have viewport.
+						bounds.union(place.geometry.viewport);
+					} else {
+						bounds.extend(place.geometry.location);
+					}
+				});
+				map.fitBounds(bounds);
+			});
+		}
+		function addMyMarker() { //function that will add markers on button click
+			var icon = {
+						url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+						size: new google.maps.Size(71, 71),
+						origin: new google.maps.Point(0, 0),
+						anchor: new google.maps.Point(17, 34),
+						scaledSize: new google.maps.Size(25, 25)
+					};
 
-            if (place.geometry.viewport) {
-              // Only geocodes have viewport.
-              bounds.union(place.geometry.viewport);
-            } else {
-              bounds.extend(place.geometry.location);
-            }
-          });
-          map.fitBounds(bounds);
-        });
-      }
+					// Create a marker for each place.
+					markers.push(new google.maps.Marker({
+						map: map,
+						icon: icon,
+						title: title,
+						position: position,
+						animation: google.maps.Animation.DROP
+					}));
+					for (var i = 0; i < markers.length; i++) { console.log(markers[i]);}
+		}
+		function deleteMyMarker() { //function that will delete markers on button click
+			markers.pop();
+		}
 
 	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initialize"
-	async defer></script>
+	<script
+		src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places&callback=initialize"
+		async defer></script>
 
 	<form>
 	</form>
