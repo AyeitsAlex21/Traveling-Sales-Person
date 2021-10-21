@@ -78,6 +78,9 @@ def genMatrix(addressList):
                 matrix[i][j] = distance
                 matrix[j][i] = distance  # distances are same
 
+    if any(-1 in row for row in matrix):
+        print("WARNING: Distance matrix contains invalid distance (-1). API function could not grab distance. Program will continue")
+
     return matrix, addressList  # returns tuple containing address list and corresponding matrix
 
 
