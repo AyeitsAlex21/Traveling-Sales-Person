@@ -1,4 +1,4 @@
-Flask==1.1.2
+Flask
 requests
 wtforms==2.3.3
 Flask-WTF==0.15.1

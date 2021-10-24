@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang="en">
 
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+</script>
+
 <head>
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no">
 	<meta charset="utf-8">
@@ -69,14 +72,16 @@
 
 <body>
 	<input id="searchTextField" class="controls" type="text" placeholder="Search Box" />
-	<div id="google_map" ></div><button id="drop" onClick="addMyMarker()">Add Location</button>
-	<div id="google_map" ></div><button id="drop" onClick="deleteMyMarker()">Delete Last Location</button>
+	<div id="google_map"></div><button id="drop" onClick="addMyMarker()">Add Location</button>
+	<div id="google_map"></div><button id="drop" onClick="deleteMyMarker()">Delete Last Location</button>
+	<div id="google_map"></div><button id="drop" onClick="minPath()">Calculate Path</button>
 	<div id="map"></div>
 
 	<script>
 		var title, position;
 		var markers = [];
 		var map;
+		var locations = [];
 		function initialize() {
 			map = new google.maps.Map(document.getElementById('map'), {
 				center: { lat: -33.8688, lng: 151.2195 },
@@ -101,12 +106,6 @@
 				if (places.length == 0) {
 					return;
 				}
-
-				// Clear out the old markers.
-				//markers.forEach(function(marker) {
-				//  marker.setMap(null);
-				//});
-				//markers = [];
 
 				// For each place, get the icon, name and location.
 				var bounds = new google.maps.LatLngBounds();
@@ -138,25 +137,49 @@
 		}
 		function addMyMarker() { //function that will add markers on button click
 			var icon = {
-						url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
-						size: new google.maps.Size(71, 71),
-						origin: new google.maps.Point(0, 0),
-						anchor: new google.maps.Point(17, 34),
-						scaledSize: new google.maps.Size(25, 25)
-					};
+				url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
+				size: new google.maps.Size(71, 71),
+				origin: new google.maps.Point(0, 0),
+				anchor: new google.maps.Point(17, 34),
+				scaledSize: new google.maps.Size(25, 25)
+			};
 
-					// Create a marker for each place.
-					markers.push(new google.maps.Marker({
-						map: map,
-						icon: icon,
-						title: title,
-						position: position,
-						animation: google.maps.Animation.DROP
-					}));
-					for (var i = 0; i < markers.length; i++) { console.log(markers[i]);}
+			// Create a marker for each place.
+			markers.push(new google.maps.Marker({
+				map: map,
+				icon: icon,
+				title: title,
+				position: position,
+				animation: google.maps.Animation.DROP
+			}));
+			var location = {
+				title: title,
+				position: position
+			}
+			locations.push(location);
+			for (var i = 0; i < markers.length; i++) { console.log(markers[i]); console.log(JSON.stringify(locations)) }
 		}
-		function deleteMyMarker() { //function that will delete markers on button click
+
+		function deleteMyMarker() { //function that will delete last marker/location on button click
 			markers.pop();
+			locations.pop();
+		}
+
+		function minPath() {
+			$.ajax({
+				url: '/_min_path',
+				type: 'POST',
+				data: JSON.stringify(locations),   // converts js value to JSON string
+				success: function (response) {
+					console.log(response);
+				},
+				error: function (err) {
+					console.log(err);
+				}
+			})
+				.done(function (result) {     // on success get the return object from server
+					console.log(result)     // do whatever with it. In this case see it in console
+				})
 		}
 
 	</script>

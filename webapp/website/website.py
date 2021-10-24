@@ -1,6 +1,7 @@
 """
 Flask-Login and Flask-WTF example
 """
+import flask
 from urllib.parse import urlparse, urljoin
 from flask import (Flask, request, render_template, redirect, url_for, flash,
                     abort, session)
@@ -10,7 +11,7 @@ from flask import Flask, render_template, request
 import requests
 
 
-app = Flask(__name__)
+app = flask.Flask(__name__)
 
 app.config.from_object(__name__)
 
@@ -19,6 +20,16 @@ app.config.from_object(__name__)
 @app.route("/")
 def index():
     return render_template("base.html")
+
+@app.route("/_min_path", methods=["GET", "POST"])
+def _min_path():
+    """
+
+    """
+    app.logger.debug("Got a JSON request")
+    res = request.args.get('data', type=str)
+    app.logger.debug("data={}".format(res))
+    return flask.jsonify(result=res)
 
 
 if __name__ == "__main__":
