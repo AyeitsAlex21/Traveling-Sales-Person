@@ -90,7 +90,7 @@ def test():
     popSize = 100
     eliteSize = 50
     mutationRate = 0.05
-    generations = 20
+    generations = 300
     geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
 
 

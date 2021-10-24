@@ -116,14 +116,16 @@ def breed(parent1, parent2):
         else:
             minimum = 5
             sub_len = len(edge_map[gene.num])
+            temp = []
             for i in range(sub_len):
                 neighbor = edge_map[gene.num][i]
-                if (len(edge_map[neighbor.num]) < minimum):
+                if (len(edge_map[neighbor.num]) < minimum): # if new min is found reset list add new min neighbor
                     minimum = len(edge_map[neighbor.num])
-                    Z = neighbor
-                elif(len(edge_map[neighbor.num]) == minimum):
-                    if (random.random() >= 0.5):
-                        Z = neighbor
+                    temp = []
+                    temp.append(neighbor)
+                elif(len(edge_map[neighbor.num]) == minimum): # if a tie occurs randomly decide
+                    temp.append(neighbor)
+            Z = temp[int(random.random() * len(temp))] # randomly decide if multiple neighbors
 
         gene = Z
 
