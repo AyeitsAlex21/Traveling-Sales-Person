@@ -57,22 +57,76 @@ def breed(parent1, parent2):
     TEST WITH THIS IMPLEMENTATION
     """
     child = []
-    childP1 = []
-    childP2 = []
-    #print(f"Parent 1: {parent1}, Parent 2: {parent2}")
+    full_size = len(parent1)
+    edge_map = []
+    for i in range(full_size):
+        edge_map.append([])
 
-    startGene = 0
-    endGene = int(random.random() * (len(parent1) - 3)) + 2
-    #print(f"startGene: {startGene}, endGene: {endGene}")
+    # this for loop makes an edge map
+    for i in range(full_size):
+        right_neighbor = i
+        left_neighbor = i
 
-    for i in range(startGene, endGene):
-        childP1.append(parent1[i])
+        if (right_neighbor + 1 == full_size):
+            right_neighbor = 0
+        else:
+            right_neighbor += 1
+        if (left_neighbor == 0):
+            left_neighbor = -1
+        else:
+            left_neighbor -= 1
 
-    childP2 = [item for item in parent2 if item not in childP1]
+        if (parent2[right_neighbor] not in edge_map[parent2[i].num]):
+            edge_map[parent2[i].num].append(parent2[right_neighbor])
+        if (parent2[left_neighbor] not in edge_map[parent2[i].num]):
+            edge_map[parent2[i].num].append(parent2[left_neighbor])
+        if (parent1[right_neighbor] not in edge_map[parent1[i].num]):
+            edge_map[parent1[i].num].append(parent1[right_neighbor])
+        if (parent1[left_neighbor] not in edge_map[parent1[i].num]):
+            edge_map[parent1[i].num].append(parent1[left_neighbor])
 
-    child = childP1 + childP2
-    #print(f"childP1: {childP1}, childP2: {childP2}")
-    #print(f"Child: {child}\n")
+    parents = [parent1, parent2]
+    gene = parents[int(random.random() * 2)][0]
+    size = 0
+
+    while(1):
+        child.append(gene)
+        size += 1
+        # Break when child is as big as parent
+        if (size >= full_size):
+            break
+
+        # remove gene from neighbor list
+        for i in range(full_size):
+            sub_len = len(edge_map[i])
+            for j in range(sub_len):
+                if (edge_map[i][j] == gene):
+                    edge_map[i].pop(j)
+                    break
+
+        # if gene's neighbor list is empty randomly select from city's not in child
+        if (len(edge_map[gene.num]) == 0):
+            temp = []
+            for i in range(full_size):
+                if(edge_map[parent1[i].num] not in child):
+                    temp.append(parent1[i])
+            Z = temp[int(random.random() * len(temp))]
+
+        # if not empty find gene's neighbor that has the least neighbors
+        else:
+            minimum = 5
+            sub_len = len(edge_map[gene.num])
+            for i in range(sub_len):
+                neighbor = edge_map[gene.num][i]
+                if (len(edge_map[neighbor.num]) < minimum):
+                    minimum = len(edge_map[neighbor.num])
+                    Z = neighbor
+                elif(len(edge_map[neighbor.num]) == minimum):
+                    if (random.random() >= 0.5):
+                        Z = neighbor
+
+        gene = Z
+
     return child
 
 
@@ -106,14 +160,13 @@ def mutate(individual, mutationRate):
 
     Called by: mutatePopulation
     """
-    if random.random() < mutationRate:
-        # randomly select indices greater than 0 (do not mutate first index)
+    if (random.random() < mutationRate):
         ind1 = int(random.random() * (len(individual) - 2)) + 1
         ind2 = ind1 + int(random.random() * (len(individual) - ind1))
 
-        if ind1 == ind2:
+        if (ind1 == ind2):
             ind2 += 2
-        elif ind1 + 1 == ind2:
+        elif (ind1 + 1 == ind2):
             ind2 += 1
         individual[ind1:ind2] = individual[ind1:ind2][::-1]
     return individual

@@ -1,5 +1,6 @@
 from change import *
 from initialize import *
+import matplotlib.pyplot as plt
 from mapsAPI import *
 
 """
@@ -54,6 +55,20 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
     return retval
 
 
+def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generations):
+    pop = initialPopulation(popSize, population)
+    progress = []
+    progress.append(1 / rankRoutes(pop)[0][1])
+
+    for i in range(0, generations):
+        pop = nextGeneration(pop, eliteSize, mutationRate)
+        progress.append(1 / rankRoutes(pop)[0][1])
+
+    plt.plot(progress)
+    plt.ylabel('Distance')
+    plt.xlabel('Generation')
+    plt.show()
+
 def test():
     dist_mtx = [
         [0, 5, 8, 5, 12, 20, 30, 40],
@@ -65,18 +80,18 @@ def test():
         [30, 20, 40, 40, 30, 4, 0, 2],
         [40, 50, 40, 20, 40, 5, 2, 0]
     ]
+
+    #newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR"]
+    #dist_mtx, name_list = genMatrix(newAddresses)
+
     name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
 
-    newAddresses = ["NYC, NY", "1710 E 15th Ave, Eugene,OR", "Cocoa Beach,FL", "Seattle, Washington"]
-    newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR"]
-    dist_mtx, name_list = genMatrix(newAddresses)
-
     population = parse_input((dist_mtx, name_list))
-    popSize = 20
-    eliteSize = 5
-    mutationRate = 0.5
-    generations = 100
-    geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
+    popSize = 100
+    eliteSize = 50
+    mutationRate = 0.05
+    generations = 15
+    geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generations)
 
 
 if __name__ == "__main__":
