@@ -37,8 +37,8 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
     Returns list of location names (str)
     """
     pop = initialPopulation(popSize, population)
-    print("Initial distance: " + str(int(1 / rankRoutes(pop)[0][1])))
     bestSoFar = Route(pop[rankRoutes(pop)[0][0]])
+    print("Initial distance: " + str(bestSoFar.route_distance()))
 
     for i in range(0, generations):
         pop = nextGeneration(pop, eliteSize, mutationRate)
@@ -81,20 +81,17 @@ def test():
         [40, 50, 40, 20, 40, 5, 2, 0]
     ]
 
-    newAddresses = ["NYC, NY", "1710 E 15th Ave, Eugene,OR", "Cocoa Beach,FL", "Seattle, Washington"]
-    dist_mtx, name_list = genMatrix(newAddresses)
+    #newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR"]
+    #dist_mtx, name_list = genMatrix(newAddresses)
 
-    #name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
+    name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
+
     population = parse_input((dist_mtx, name_list))
     popSize = 100
     eliteSize = 50
     mutationRate = 0.05
     generations = 15
     geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generations)
-
-
-def main():
-    return 0
 
 
 if __name__ == "__main__":
