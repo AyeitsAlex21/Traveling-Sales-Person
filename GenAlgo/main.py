@@ -83,14 +83,16 @@ def test():
     #name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
 
     newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR", "Wyoming", "Texas",
-                    "Space Needle Loop, Seattle, Space NWA 98109", "Mexico", "Topeka, Kansas",]
+                    "Space Needle Loop, Seattle, Space NWA 98109", "Mexico", "Topeka, Kansas", "Thurston Hills Natural Area",
+                    "4000 Interstate 55 South, Jackson, MS 39212", "18301 MN-7, Minnetonka, MN 55345",
+                    "4001 9th St N, Arlington, VA 22203", "447 N Main St, Pittsfield, ME 04967"]
     dist_mtx, name_list = genMatrix(newAddresses)
 
     population = parse_input((dist_mtx, name_list))
     popSize = 100
     eliteSize = 50
     mutationRate = 0.05
-    generations = 300
+    generations = 50
     geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
 
 
