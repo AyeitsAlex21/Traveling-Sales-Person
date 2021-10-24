@@ -108,7 +108,7 @@ def breed(parent1, parent2):
         if (len(edge_map[gene.num]) == 0):
             temp = []
             for i in range(full_size):
-                if(edge_map[parent1[i].num] not in child):
+                if(parent1[i] not in child):
                     temp.append(parent1[i])
             Z = temp[int(random.random() * len(temp))]
 

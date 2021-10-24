@@ -80,18 +80,18 @@ def test():
         [30, 20, 40, 40, 30, 4, 0, 2],
         [40, 50, 40, 20, 40, 5, 2, 0]
     ]
+    #name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
 
-    #newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR"]
-    #dist_mtx, name_list = genMatrix(newAddresses)
-
-    name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
+    newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR", "Wyoming", "Texas",
+                    "Space Needle Loop, Seattle, Space NWA 98109", "Mexico", "Topeka, Kansas",]
+    dist_mtx, name_list = genMatrix(newAddresses)
 
     population = parse_input((dist_mtx, name_list))
     popSize = 100
     eliteSize = 50
     mutationRate = 0.05
-    generations = 15
-    geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generations)
+    generations = 20
+    geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
 
 
 if __name__ == "__main__":
