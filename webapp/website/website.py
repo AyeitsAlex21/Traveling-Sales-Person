@@ -2,6 +2,7 @@
 Flask-Login and Flask-WTF example
 """
 import flask
+import jsons
 from urllib.parse import urlparse, urljoin
 from flask import (Flask, request, render_template, redirect, url_for, flash,
                     abort, session)
@@ -21,16 +22,20 @@ app.config.from_object(__name__)
 def index():
     return render_template("base.html")
 
-@app.route("/_min_path", methods=["GET", "POST"])
+@app.route("/_min_path", methods=["GET"])
 def _min_path():
     """
 
     """
     app.logger.debug("Got a JSON request")
-    res = request.args.get('data', type=str)
+    app.logger.debug("request.args: {}".format(request.args))
+    res = request.args.get('vals')
+    # data = jsons.dumps(res)
+    app.logger.debug(type(res))
     app.logger.debug("data={}".format(res))
-    return flask.jsonify(result=res)
-
+    r = requests.get('http://restapi:5000/' + 'compute/' + res)
+    return r.text
+    #return flask.jsonify(result=res)
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
