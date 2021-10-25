@@ -34,7 +34,13 @@ def _min_path():
     app.logger.debug(type(res))
     app.logger.debug("data={}".format(res))
     r = requests.get('http://restapi:5000/' + 'compute/' + res)
-    return r.text
+    app.logger.debug(r.text)
+    app.logger.debug(type(r.text))
+    app.logger.debug(jsons.loads(r.text))
+    vals = jsons.loads(r.text)
+    app.logger.debug(type(vals))
+    app.logger.debug(vals)
+    return render_template("path.html", vals=vals.get('ret'))
     #return flask.jsonify(result=res)
 
 if __name__ == "__main__":

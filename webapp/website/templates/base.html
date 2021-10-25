@@ -112,6 +112,7 @@
 				places.forEach(function (place) {
 					title = place.name;
 					position = place.geometry.location;
+					place_id = place.place_id
 					if (!place.geometry) {
 
 						console.log("Returned place contains no geometry");
@@ -154,7 +155,8 @@
 			}));
 			var location = {
 				title: title,
-				position: position
+				position: position,
+				place_id: place_id
 			}
 			locations.push(location);
 			for (var i = 0; i < markers.length; i++) { console.log(markers[i]); console.log(JSON.stringify(locations)) }
@@ -167,8 +169,14 @@
 
 		function minPath() {
 			$.getJSON('/_min_path', {vals: JSON.stringify(locations)}).done(
-				function(data) {
+				function(out) {
 					console.log("Got a response! : ");
+					var place_id = out.ret;
+					var obj = JSON.parse(place_id);
+					console.log(typeof obj);
+					console.log(typeof place_id);
+					console.log(obj);
+					console.log(place_id);
 				}
 			).fail(function(err){
 				console.log("Erorr!");
@@ -192,7 +200,7 @@
 
 	</script>
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts&libraries=places&callback=initialize"
+		src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_&libraries=places&callback=initialize"
 		async defer></script>
 
 	<form>

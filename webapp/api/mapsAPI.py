@@ -27,10 +27,11 @@ def get_distance(origin, destination):
     """
 
     # get API key
-    fp = open("api-key.txt", "r")
-    API_KEY = fp.read()
-    fp.close()
+    # fp = open("api-key.txt", "r")
+    # API_KEY = fp.read()
+    # fp.close()
 
+    API_KEY = "AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts"
     # base url
     url = f"https://maps.googleapis.com/maps/api/distancematrix/json?" \
           f"origins={origin}&destinations={destination}" \
