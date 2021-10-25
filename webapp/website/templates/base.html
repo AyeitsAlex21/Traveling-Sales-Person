@@ -23,6 +23,20 @@
 			padding: 0;
 		}
 
+		#drop {
+			display: inline-block;
+			font-family: Roboto;
+			font-size: 15px;
+			font-weight: 500;
+			background: white;
+			color: #444;
+			width: 190px;
+			border-radius: 5px;
+			border: thin solid #888;
+			box-shadow: 1px 1px 1px grey;
+			white-space: nowrap;
+		}
+
 		#description {
 			font-family: Roboto;
 			font-size: 15px;
@@ -71,10 +85,12 @@
 </head>
 
 <body>
+	<div style="width:1000px;" id="bar">
+		<button id="drop" onClick="addMyMarker()" class="controls">Add Location</button>
+		<button id="drop" onClick="deleteMyMarker()" class="controls">Delete Last Location</button>
+		<button id="drop" onClick="minPath()" class="controls">Calculate Path</button>
+	</div>
 	<input id="searchTextField" class="controls" type="text" placeholder="Search Box" />
-	<div id="google_map"></div><button id="drop" onClick="addMyMarker()">Add Location</button>
-	<div id="google_map"></div><button id="drop" onClick="deleteMyMarker()">Delete Last Location</button>
-	<div id="google_map"></div><button id="drop" onClick="minPath()">Calculate Path</button>
 	<div id="map"></div>
 
 	<script type=text/javascript>
@@ -200,7 +216,7 @@
 
 	</script>
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY_&libraries=places&callback=initialize"
+		src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places&callback=initialize"
 		async defer></script>
 
 	<form>
