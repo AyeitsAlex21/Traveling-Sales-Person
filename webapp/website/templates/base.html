@@ -186,7 +186,6 @@
 		function minPath() {
 			$.getJSON('/_min_path', {vals: JSON.stringify(locations)}).done(
 				function(data) {
-					console.log("Got a response! : ");
 					var places = data.ret;
 					var path = [];
 					for (id in places) {
@@ -197,52 +196,36 @@
 							}
 						}
 					}
-					path.push(locations[0].position);
-
-					console.log("data");
-					console.log(typeof data);
-					console.log(data);
-					console.log("places");
-					console.log(typeof places);
-					console.log(places);
-					console.log("path");
-					console.log(typeof path);
-					console.log(path);
+					var directionsService = new google.maps.DirectionsService();
+  				var directionsRenderer = new google.maps.DirectionsRenderer();
+					directionsRenderer.setMap(map);
 					let len = path.length;
-					for (let i = 0; i < len; i++) {
-						console.log(path[i])
+					directions = [];
+					waypoints = [];
+					for (let i = 1; i < len; i++) {
+						waypoints.push({
+							location: path[i],
+							stopover: true,
+						});
 					}
-					const flightPath = new google.maps.Polyline({
-    			path: path,
-    			geodesic: true,
-    			strokeColor: "#FF0000",
-    			strokeOpacity: 1.0,
-    			strokeWeight: 2,
-  				});
-
-  				flightPath.setMap(map);
-
+					directionsService.route({
+				      origin: path[0],
+				      destination: path[0],
+				      waypoints: waypoints,
+				      optimizeWaypoints: false,
+				      travelMode: google.maps.TravelMode.DRIVING,
+				    })
+				    .then((response) => {
+				      directionsRenderer.setDirections(response);
+						})
 				}
 			).fail(function(err){
 				console.log("Erorr!");
 				console.log(err);
 			});
-
-			// $.ajax({
-			// 	url: '/_min_path',
-			// 	type: 'GET',
-			// 	data: JSON.stringify(locations),   // converts js value to JSON string
-			// 	success: function (response) {
-			// 		console.log(response);
-			// 	},
-			// 	error: function (err) {
-			// 		console.log(err);
-			// 	}
-			// })
-			// 	.done(function (result) {     // on success get the return object from server
-			// 		console.log(result)     // do whatever with it. In this case see it in console
-			// 	})
 		}
+
+
 
 	</script>
 	<script

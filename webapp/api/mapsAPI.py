@@ -72,12 +72,11 @@ def genMatrix(addressList):
             matrix[j].append(0)
 
     for j in range(n):
-        for i in range(j, n):  # we consider distance same in both directions, reduces request waiting time
+        for i in range(n):  # we consider distance same in both directions, reduces request waiting time
             if i != j:  # distance from x to x is 0
                 distance = get_distance(addressList[i], addressList[j])
 
-                matrix[i][j] = distance
-                matrix[j][i] = distance  # distances are same
+                matrix[j][i] = distance
 
     if any(-1 in row for row in matrix):
         print("WARNING: Distance matrix contains invalid distance (-1). API function could not grab distance. Program will continue")
