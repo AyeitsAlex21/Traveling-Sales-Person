@@ -71,28 +71,21 @@ def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generatio
 
 def test():
     dist_mtx = [
-        [0, 5, 8, 5, 12, 20, 30, 40],
-        [5, 0, 1, 3, 13, 30, 20, 40],
-        [8, 1, 0, 2, 10, 20, 40, 30],
-        [6, 5, 2, 0, 7, 10, 40, 20],
-        [13, 13, 10, 14, 0, 30, 10, 40],
-        [20, 30, 20, 10, 15, 0, 3, 5],
-        [30, 20, 40, 40, 30, 4, 0, 2],
-        [40, 50, 40, 20, 40, 5, 2, 0]
+        [0, 2.8, 3],
+        [2.8,0,3.6],
+        [2.4, 3.5,0]
     ]
-    #name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
+    name_list = ["Zero", "One", "Two"]
 
-    newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR", "Wyoming", "Texas",
-                    "Space Needle Loop, Seattle, Space NWA 98109", "Mexico", "Topeka, Kansas", "Thurston Hills Natural Area",
-                    "4000 Interstate 55 South, Jackson, MS 39212", "18301 MN-7, Minnetonka, MN 55345",
-                    "4001 9th St N, Arlington, VA 22203", "447 N Main St, Pittsfield, ME 04967"]
+    newAddresses = ["13th & Olive, 1180 Willamette St, Eugene, OR 97401", "Chase Village Student Housing, 375 Marche Chase Dr, Eugene, OR 97401",
+                    "Valley River Inn, 1000 Valley River Way, Eugene, OR 97401"]
     dist_mtx, name_list = genMatrix(newAddresses)
 
     population = parse_input((dist_mtx, name_list))
     popSize = 100
     eliteSize = 50
     mutationRate = 0.05
-    generations = 50
+    generations = 8
     geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
 
 

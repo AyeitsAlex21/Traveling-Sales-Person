@@ -45,7 +45,28 @@ class Route():
 
         Aha-- this function returns the total distance including a return to the start.
         """
-        loop_to_start = False
+
+        """
+                This version finds the most efficeint route to hit each city one time from the start without
+                going back to the beginning
+
+                loop_to_start = False
+                if self.distance == 0:
+                    pathDistance = 0
+                    for i in range(0, len(self.route)):
+                        fromCity = self.route[i]
+                        toCity = None
+                        if i + 1 < len(self.route):
+                            toCity = self.route[i + 1]
+                        else:
+                            if not loop_to_start:
+                                continue
+                            toCity = self.route[0]
+                        pathDistance += fromCity.distance(toCity)
+                    self.distance = pathDistance
+                return self.distance
+                """
+
         if self.distance == 0:
             pathDistance = 0
             for i in range(0, len(self.route)):
@@ -54,8 +75,6 @@ class Route():
                 if i + 1 < len(self.route):
                     toCity = self.route[i + 1]
                 else:
-                    if not loop_to_start:
-                        continue
                     toCity = self.route[0]
                 pathDistance += fromCity.distance(toCity)
             self.distance = pathDistance
