@@ -16,40 +16,39 @@ app.config.from_object(__name__)
 
 class compute(Resource):
     def get(self, data):
-        app.logger.debug(data)
-        app.logger.debug("request.args: {}".format(request.args))
+        # app.logger.debug(data)
+        # app.logger.debug("request.args: {}".format(request.args))
         vals = jsons.loads(data)
-        app.logger.debug("Got vals")
-        app.logger.debug(type(vals))
-        app.logger.debug(vals)
+        # app.logger.debug("Got vals")
+        # app.logger.debug(type(vals))
+        # app.logger.debug(vals)
         place_id_list =[]
         for val in vals:
-            app.logger.debug("val")
-            app.logger.debug(type(val))
-            app.logger.debug(val)
-            app.logger.debug("val.get")
-            app.logger.debug(val.get('place_id'))
+            # app.logger.debug("val")
+            # app.logger.debug(type(val))
+            # app.logger.debug(val)
+            # app.logger.debug("val.get")
+            # app.logger.debug(val.get('place_id'))
             place_id_list.append(val.get('place_id'))
         dist_mtx, name_list = genMatrix(place_id_list)
-        for name in name_list:
-            app.logger.debug(name)
-        for r in dist_mtx:
-            app.logger.debug("dst_mtx")
-            app.logger.debug(r)
+        # for name in name_list:
+        #     app.logger.debug(name)
+        # for r in dist_mtx:
+        #     app.logger.debug("dst_mtx")
+        #     app.logger.debug(r)
         population = parse_input((dist_mtx, name_list))
         popSize = 100
         eliteSize = 50
         mutationRate = 0.05
         generations = 75
         sorted_place_id = geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
-        for place in sorted_place_id:
-            app.logger.debug(type(place))
-            app.logger.debug(place)
+        # for place in sorted_place_id:
+        #     app.logger.debug(type(place))
+        #     app.logger.debug(place)
         out =   {
                 "ret": sorted_place_id
                 }
         return jsonify(out)
-        #return jsons.dumps(out)#flask.jsonify(out=out), 200
 
 
 # Create routes

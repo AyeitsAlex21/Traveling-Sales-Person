@@ -27,22 +27,21 @@ def _min_path():
     """
 
     """
-    app.logger.debug("Got a JSON request")
-    app.logger.debug("request.args: {}".format(request.args))
+    # app.logger.debug("Got a JSON request")
+    # app.logger.debug("request.args: {}".format(request.args))
     res = request.args.get('vals')
     # data = jsons.dumps(res)
-    app.logger.debug(type(res))
-    app.logger.debug("data={}".format(res))
+    # app.logger.debug(type(res))
+    # app.logger.debug("data={}".format(res))
     r = requests.get('http://restapi:5000/' + 'compute/' + res)
-    app.logger.debug(r.text)
-    app.logger.debug(type(r.text))
-    app.logger.debug(jsons.loads(r.text))
-    vals = jsons.loads(r.text)
-    app.logger.debug(type(vals))
-    app.logger.debug(vals)
+    # app.logger.debug(r.text)
+    # app.logger.debug(type(r.text))
+    # app.logger.debug(jsons.loads(r.text))
+    # vals = jsons.loads(r.text)
+    # app.logger.debug(type(vals))
+    # app.logger.debug(vals)
     return r.text
-    #return render_template("path.html", vals=vals.get('ret'))
-    #return flask.jsonify(result=res)
+
 
 if __name__ == "__main__":
     app.run(debug=True, host='0.0.0.0')
