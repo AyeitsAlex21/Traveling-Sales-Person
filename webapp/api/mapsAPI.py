@@ -34,7 +34,7 @@ def get_distance(origin, destination):
     API_KEY = "AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts"
     # base url
     url = f"https://maps.googleapis.com/maps/api/distancematrix/json?" \
-          f"origins={origin}&destinations={destination}" \
+          f"origins=place_id:{origin}&destinations=place_id:{destination}" \
           f"&units=imperial&key={API_KEY}"
 
     response = requests.request("GET", url, headers={}, data={})  # query response from google maps
@@ -46,8 +46,8 @@ def get_distance(origin, destination):
     distancestr = response["rows"][0]["elements"][0]["distance"]["text"]  # isolate .json element
 
     # this just turns the string into integer form
-    found = regex.search(r"\d*,*\d*", distancestr)
-    distance = int(found.group().replace(",", ""))
+    found = regex.search(r"\d*[,.]*\d*", distancestr)
+    distance = float(found.group().replace(",", ""))
 
     return distance  # integer
 

@@ -40,7 +40,8 @@ def _min_path():
     vals = jsons.loads(r.text)
     app.logger.debug(type(vals))
     app.logger.debug(vals)
-    return render_template("path.html", vals=vals.get('ret'))
+    return r.text
+    #return render_template("path.html", vals=vals.get('ret'))
     #return flask.jsonify(result=res)
 
 if __name__ == "__main__":

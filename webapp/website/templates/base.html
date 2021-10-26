@@ -185,19 +185,49 @@
 
 		function minPath() {
 			$.getJSON('/_min_path', {vals: JSON.stringify(locations)}).done(
-				function(out) {
+				function(data) {
 					console.log("Got a response! : ");
-					var place_id = out.ret;
-					var obj = JSON.parse(place_id);
-					console.log(typeof obj);
-					console.log(typeof place_id);
-					console.log(obj);
-					console.log(place_id);
+					var places = data.ret;
+					var path = [];
+					for (id in places) {
+						let len = locations.length;
+						for (let i = 0; i < len; i++) {
+							if (places[id] == locations[i].place_id) {
+									path.push(locations[i].position);
+							}
+						}
+					}
+					path.push(locations[0].position);
+
+					console.log("data");
+					console.log(typeof data);
+					console.log(data);
+					console.log("places");
+					console.log(typeof places);
+					console.log(places);
+					console.log("path");
+					console.log(typeof path);
+					console.log(path);
+					let len = path.length;
+					for (let i = 0; i < len; i++) {
+						console.log(path[i])
+					}
+					const flightPath = new google.maps.Polyline({
+    			path: path,
+    			geodesic: true,
+    			strokeColor: "#FF0000",
+    			strokeOpacity: 1.0,
+    			strokeWeight: 2,
+  				});
+
+  				flightPath.setMap(map);
+
 				}
 			).fail(function(err){
 				console.log("Erorr!");
 				console.log(err);
 			});
+
 			// $.ajax({
 			// 	url: '/_min_path',
 			// 	type: 'GET',
@@ -216,7 +246,7 @@
 
 	</script>
 	<script
-		src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places&callback=initialize"
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts&libraries=places&callback=initialize"
 		async defer></script>
 
 	<form>
