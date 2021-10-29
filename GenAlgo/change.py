@@ -1,4 +1,12 @@
-import random
+"""
+Source Code for the initialization used in the Genetic Algorithm, CIS422 FA21
+Author(s): Eric Stoltz, Alex Summers, Sarah Kitten
+Last Edited: 10/28/21
+Sources:
+    Base version of the code:
+    https://towardsdatascience.com/evolution-of-a-salesman-a-complete-genetic-algorithm-tutorial-for-python-6fe5d2b3ca35
+"""
+
 from initialize import *
 import pandas as pd
 import numpy as np

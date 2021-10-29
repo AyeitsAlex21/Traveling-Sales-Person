@@ -1,21 +1,20 @@
+"""
+Source Code for main used in the Genetic Algorithm, CIS422 FA21
+Author(s): Eric Stoltz, Sarah Kitten, Alex Summers
+Last Edited: 10/28/21
+Sources:
+    Base version of the code:
+    https://towardsdatascience.com/evolution-of-a-salesman-a-complete-genetic-algorithm-tutorial-for-python-6fe5d2b3ca35
+"""
+
 from change import *
 from initialize import *
 import matplotlib.pyplot as plt
-from mapsAPI import *
-
-"""
-TODO:
-
-Experiment with values for popSize, eliteSize, mutationRate, generations
-Make an option to force routes to return to the start (each route will begin and end with the "first" city)
-"""
-
 
 def parse_input(input):
     """
     ([[int]], [str]) -> [City]
     Convert input from maps API into list of city objects
-    TODO more input checking?
     """
     dist_mtx, name_list = input
     cities = []
@@ -77,9 +76,7 @@ def test():
     ]
     name_list = ["Zero", "One", "Two"]
 
-    newAddresses = ["13th & Olive, 1180 Willamette St, Eugene, OR 97401", "Chase Village Student Housing, 375 Marche Chase Dr, Eugene, OR 97401",
-                    "Valley River Inn, 1000 Valley River Way, Eugene, OR 97401"]
-    dist_mtx, name_list = genMatrix(newAddresses)
+    #dist_mtx, name_list = genMatrix(newAddresses)
 
     population = parse_input((dist_mtx, name_list))
     popSize = 100
