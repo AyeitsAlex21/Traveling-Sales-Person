@@ -44,8 +44,10 @@ def get_distance(origin, destination):
     response = response.json()
     distancestr = response["rows"][0]["elements"][0]["distance"]["text"]  # isolate .json element
 
+    print(distancestr)
     # this just turns the string into integer form
     found = re.search(r"\d*,*\d*", distancestr)
+
     distance = int(found.group().replace(",", ""))
 
     return distance  # integer
@@ -86,7 +88,7 @@ def genMatrix(addressList):
 
 if __name__ == '__main__':
     # Example
-    newAddresses = ["NYC, NY", "1710 E 15th Ave, Eugene,OR", "Cocoa Beach,FL", "Seattle, Washington"]
+    newAddresses = ["Safeway, Eugene, OR", "Home Depot, Eugene,OR", "University of Oregon, OR", "Sizzle Pie, Eugene, OR"]
     newMatrix, addresses = genMatrix(newAddresses)
 
     for address in newMatrix:
