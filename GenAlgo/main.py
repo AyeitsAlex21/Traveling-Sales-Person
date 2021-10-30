@@ -10,15 +10,17 @@ Sources:
 from change import *
 from initialize import *
 import matplotlib.pyplot as plt
+from mapsAPI import *
 
 def parse_input(input):
     """
     ([[int]], [str]) -> [City]
     Convert input from maps API into list of city objects
     """
-    dist_mtx, name_list = input
-    cities = []
+    dist_mtx, name_list = input  # separate tuple from maps API into distance matrix and name list
+    cities = []  # initialize list of cities
     for i in range(len(name_list)):
+        # for each city in the name list, create a City object and add it to cities
         cities.append(City(name_list[i], i, dist_mtx[i]))
     return cities
 
@@ -35,23 +37,25 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
     This function runs the whole Genetic Algorithm.
     Returns list of location names (str)
     """
-    pop = initialPopulation(popSize, population)
-    bestSoFar = Route(pop[rankRoutes(pop)[0][0]])
-    print("Initial distance: " + str(bestSoFar.route_distance()))
+    pop = initialPopulation(popSize, population)  # create initial population
+    bestSoFar = pop[rankRoutes(pop)[0][0]]  # Store the shortest route from the initial population
+    print("Initial distance: " + str(Route(bestSoFar).route_distance()))
 
-    for i in range(0, generations):
-        pop = nextGeneration(pop, eliteSize, mutationRate)
-        ranked = rankRoutes(pop)
-        intermedDist = 1 / ranked[0][1]
-        if intermedDist < bestSoFar.route_distance():
-            bestSoFar = Route(pop[ranked[0][0]])
+    for i in range(0, generations):  # for each generation:
+        pop = nextGeneration(pop, eliteSize, mutationRate)  # breed and mutate to form the next generation
+        ranked = rankRoutes(pop)  # rank the routes of the new generation
+        intermedDist = 1 / ranked[0][1]  # find the shortest route in this generation
+        if intermedDist < Route(bestSoFar).route_distance():
+            # if the shortest route in this generation is shorter than bestSoFar, update bestSoFar
+            bestSoFar = pop[ranked[0][0]]
 
-    print("Final distance: " + str(bestSoFar.route_distance()))
-    retval = []
-    for city in bestSoFar.route:
+    print("Final distance: " + str(Route(bestSoFar).route_distance()))
+
+    retval = []  # initialize list of location names
+    for city in bestSoFar:  # add each location name to retval
         retval.append(city.name)
     print(retval)
-    return retval
+    return retval  # return the shortest route
 
 
 def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generations):
@@ -68,6 +72,7 @@ def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generatio
     plt.xlabel('Generation')
     plt.show()
 
+
 def test():
     dist_mtx = [
         [0, 2.8, 3],
@@ -75,8 +80,14 @@ def test():
         [2.4, 3.5,0]
     ]
     name_list = ["Zero", "One", "Two"]
+    newAddresses = ["Orlando, Florida", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR"]
+    newAddresses = ['NYC, NY', 'Cocoa Beach,FL', 'San Francisco, CA', 'Eugene,OR']
+    # dist_mtx, name_list = genMatrix(newAddresses)
 
-    #dist_mtx, name_list = genMatrix(newAddresses)
+    name_list = ['NYC, NY', 'Cocoa Beach,FL', 'San Francisco, CA', 'Eugene,OR']
+    dist_mtx = [[0, 1103.0, 2906.0, 2910.0], [1102.0, 0, 2877.0, 3103.0], [2903.0, 2874.0, 0, 530.0], [2911.0, 3106.0, 528.0, 0]]
+    print(dist_mtx)
+    print(name_list)
 
     population = parse_input((dist_mtx, name_list))
     popSize = 100
