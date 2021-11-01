@@ -1,6 +1,20 @@
+<!-- Source Code for the UI of the web app , CIS422 FA21
+Author(s): Anna Nguyen, Kale Satta-Hutton
+Last Edited: 10/31/21
+Description: This template renders an embeded google map with a search bar to
+look up locations to add to a route. Users can also delete locations. Once all
+locations are inputted, users can select to calculate the optimal path. The
+page will then pass the user inputted data to be processed in the Genetic 
+Algorithm and render a new map with routes displayed using Google Maps API
+DirectionService.
+Sources:
+	https://developers.google.com/maps/documentation/embed/get-started
+     -->
+
 <!doctype html>
 <html lang="en">
 
+<!-- Library to pass user data into the Flask App -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
 </script>
 
@@ -9,21 +23,24 @@
 	<meta charset="utf-8">
 	<title>Landing Page</title>
 	<style>
-		/* Always set the map height explicitly to define the size of the div
-		   * element that contains the map. */
+		/* CSS Styling
+			Always set the map height explicitly to define the size of the div
+		    element that contains the map.
+		*/
 		#map {
 			height: 100%;
 		}
 
-		/* Optional: Makes the sample page fill the window. */
+		/* Fills map to fit window */
 		html,
 		body {
 			height: 100%;
 			margin: 0;
 			padding: 0;
+			font-family: Roboto;
 		}
 
-		#drop {
+		#button {
 			display: inline-block;
 			font-family: Roboto;
 			font-size: 15px;
@@ -85,34 +102,42 @@
 </head>
 
 <body>
+	<!-- Displays Add Location and Calculate Path button controls -->
 	<div style="width:1000px;" id="bar">
-		<button id="drop" onClick="addMyMarker()" class="controls">Add Location</button>
-		<button id="drop" onClick="minPath()" class="controls">Calculate Path</button>
-		<p id="LargeInventory"></p>
+		<button id="button" onClick="addMyMarker()" class="controls">Add Location</button>
+		<button id="button" onClick="minPath()" class="controls">Calculate Path</button>
+
+		<!-- Where currently added locations will display -->
+		<p id="locationDisplay"></p>
 	</div>
+
+	<!-- Search Bar to look up locations to add -->
 	<input id="searchTextField" class="controls" type="text" placeholder="Search Box" />
+
+	<!-- Embeded Google Map -->
 	<div id="map"></div>
 
 	<script type=text/javascript>
-		var LargeList = [];
-		var title, position;
-		var markers = [];
+		var locations = []; // Array of locations to pass to the Flask App
+		var title, position; // Location title and position to be passed into array of locations
+		var markers = []; // Marker array to display markers ion map
 		var locationsLength = 0;
-		var map;
-		var locations = [];
+		var map; // Embeded Google Map
+
 		function initialize() {
+			// Initializes google map and map controls
 			map = new google.maps.Map(document.getElementById('map'), {
 				center: { lat: -33.8688, lng: 151.2195 },
 				zoom: 13,
 				mapTypeId: 'roadmap'
 			});
 
-			// Create the search box and link it to the UI element.
+			// Creates a search bar and link it to the UI componment
 			var input = document.getElementById('searchTextField');
 			var autocomplete = new google.maps.places.SearchBox(input);
 			map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 
-			// Bias the SearchBox results towards current map's viewport.
+			// Moves map viewpoint to result of the serach bar
 			map.addListener('bounds_changed', function () {
 				autocomplete.setBounds(map.getBounds());
 			});
@@ -125,7 +150,7 @@
 					return;
 				}
 
-				// For each place, get the icon, name and location.
+				// For each place, get the icon, name and location
 				var bounds = new google.maps.LatLngBounds();
 				places.forEach(function (place) {
 					title = place.name;
@@ -138,7 +163,6 @@
 					}
 
 					if (place.geometry.viewport) {
-						// Only geocodes have viewport.
 						bounds.union(place.geometry.viewport);
 					} else {
 						bounds.extend(place.geometry.location);
@@ -147,7 +171,8 @@
 				map.fitBounds(bounds);
 			});
 		}
-		function addMyMarker() { //function that will add markers on button click
+		function addMyMarker() { // Function that will add markers on button click
+			// Initialize marker icon
 			var icon = {
 				url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",
 				size: new google.maps.Size(71, 71),
@@ -156,7 +181,7 @@
 				scaledSize: new google.maps.Size(25, 25)
 			};
 
-			// Create a marker for each place.
+			// Create a new marker 
 			markers.push(new google.maps.Marker({
 				map: map,
 				icon: icon,
@@ -164,39 +189,44 @@
 				position: position,
 				animation: google.maps.Animation.DROP
 			}));
+
+			// Initialize and add location to locationsay
 			var location = {
 				title: title,
 				position: position,
 				place_id: place_id
 			}
+
+			// Add location to location array
 			locations.push(location);
 			locationsLength++;
-			//
-			LargeList.push(title);
 
-        	PopulateList(LargeList);
-			//
-			for (var i = 0; i < locationsLength; i++) {console.log(JSON.stringify(locations)) }
+			// Display list of locations on UI
+        	displayList(locations);
+
+			console.log(JSON.stringify(locations))
 		}
 
-		function PopulateList(arr) {
-			LLen = arr.length;
+		function displayList(locations) { // Loops through array of locations and displays dynamic list with delete button
+			LLen = locations.length; // Declare location array length
 
 			text = "<ul>";
 			for (i = 0; i < LLen; i++) {
-				text += "<li>" + arr[i] + "<input type='button' onclick='Delitem(" + i + ")' value='Delete' /></li>";
+				text += "<li>" + locations[i].title + "<input type='button' id='button' onclick='deleteLocation(" + i + ")' value='Delete' /></li>";
 			}
 			text += "</ul>";
 
-			document.getElementById("LargeInventory").innerHTML = text;
+			// Update locationDisplay in UI with dynamic array
+			document.getElementById("locationDisplay").innerHTML = text;
     	}
-		function Delitem(index) {
+
+		function deleteLocation(index) { // Removes selected location element from location array and marker from map/array
 			locationsLength--;
-			LargeList.splice(index, 1);
-			locations.splice(index, 1);
-			PopulateList(LargeList);
-			markers[index].setMap(null);
-			markers.splice(index, 1);
+
+			locations.splice(index, 1); // Delete location from array
+			displayList(locations); // Update dynamic array
+			markers[index].setMap(null); // Remove marker form map
+			markers.splice(index, 1); // Remove marker from marker array
 			console.log(JSON.stringify(locations))
 		}
 
@@ -243,13 +273,13 @@
 		}
 
 	</script>
-	<script
-		src="https://maps.googleapis.com/maps/api/js?key=API_KEY&libraries=places&callback=initialize"
+	<!-- Set the Maps Embed API URL as the src attribute -->
+	<script 
+		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts&libraries=places&callback=initialize"
 		async defer></script>
 
 	<form>
 	</form>
 
 </body>
-
 </html>
