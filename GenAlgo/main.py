@@ -59,21 +59,35 @@ def geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations):
 
 
 def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generations):
-    pop = initialPopulation(popSize, population)
-    progress = []
-    progress.append(1 / rankRoutes(pop)[0][1])
+    """
+    :param population: List of citys in chronological order.
+    :param popSize: Max size the population can be.
+    :param eliteSize: Min size the population can be.
+    :param mutationRate: Chance an individual can mutate.
+    :param generations: How many times will GA run.
+    :return: Route with the shortest approximate distance.
 
-    for i in range(0, generations):
-        pop = nextGeneration(pop, eliteSize, mutationRate)
-        progress.append(1 / rankRoutes(pop)[0][1])
+    This function runs the whole Genetic Algorithm and plots the progress of it.
+    Returns nothing but prints a graph
+        """
+    pop = initialPopulation(popSize, population) # create initial population
+    progress = [] # the list of route distances to graph
+    progress.append(1 / rankRoutes(pop)[0][1]) # puts best distance of initial pop into list to graph later
 
-    plt.plot(progress)
-    plt.ylabel('Distance')
-    plt.xlabel('Generation')
-    plt.show()
+    for i in range(0, generations): # for each generation:
+        pop = nextGeneration(pop, eliteSize, mutationRate) # breed and mutate to form the next generation
+        progress.append(1 / rankRoutes(pop)[0][1]) # puts best distance of this gen into list to graph later
+
+    plt.plot(progress) # plots distance on y and generatoins on x
+    plt.ylabel('Distance') # plot y label
+    plt.xlabel('Generation') # plot x label
+    plt.show() # shows graph to user
 
 
 def test():
+    """
+    mini testing funciton
+    """
     dist_mtx = [
         [0, 2.8, 3],
         [2.8,0,3.6],
