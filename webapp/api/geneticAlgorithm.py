@@ -84,7 +84,7 @@ def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generatio
     plt.xlabel('Generation') # plot x label
     plt.show() # shows graph to user
 
-
+"""
 def test():
     """
     mini testing funciton
@@ -114,3 +114,4 @@ def test():
 
 if __name__ == "__main__":
     test()
+"""
