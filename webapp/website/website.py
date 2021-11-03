@@ -3,7 +3,7 @@ Flask-Login and Flask-WTF example
 website.py
 Source Code for Flask-Login and Flask-WTF or intereaction between Front-end and Genetic Algorithm/Google Maps API
 Author(s): Kale Satta-Hutton, Anna Nguyen
-CIS422 FA21
+NASAK CIS422 FA21
 Last Modifed Date: 10/31/21
 Description:
   This file contains two routes. The first route renders base.html when the user first navigates to the landing page.
