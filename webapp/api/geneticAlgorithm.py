@@ -3,13 +3,6 @@ from initialize import *
 import matplotlib.pyplot as plt
 from mapsAPI import *
 
-"""
-TODO:
-
-Experiment with values for popSize, eliteSize, mutationRate, generations
-Make an option to force routes to return to the start (each route will begin and end with the "first" city)
-"""
-
 
 def parse_input(input):
     """
@@ -68,31 +61,3 @@ def geneticAlgorithmPlot(population, popSize, eliteSize, mutationRate, generatio
     plt.ylabel('Distance')
     plt.xlabel('Generation')
     plt.show()
-
-# def test():
-#     dist_mtx = [
-#         [0, 5, 8, 5, 12, 20, 30, 40],
-#         [5, 0, 1, 3, 13, 30, 20, 40],
-#         [8, 1, 0, 2, 10, 20, 40, 30],
-#         [6, 5, 2, 0, 7, 10, 40, 20],
-#         [13, 13, 10, 14, 0, 30, 10, 40],
-#         [20, 30, 20, 10, 15, 0, 3, 5],
-#         [30, 20, 40, 40, 30, 4, 0, 2],
-#         [40, 50, 40, 20, 40, 5, 2, 0]
-#     ]
-#     #name_list = ["Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven"]
-#
-#     newAddresses = ["Seattle, Washington", "Portland, OR", "Salem, OR", "Eugene,OR", "Bend, OR", "Wyoming", "Texas",
-#                     "Space Needle Loop, Seattle, Space NWA 98109", "Mexico", "Topeka, Kansas",]
-#     dist_mtx, name_list = genMatrix(newAddresses)
-#
-#     population = parse_input((dist_mtx, name_list))
-#     popSize = 100
-#     eliteSize = 50
-#     mutationRate = 0.05
-#     generations = 300
-#     geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
-#
-#
-# if __name__ == "__main__":
-#      test()

@@ -1,5 +1,5 @@
 FROM python:3.8
-LABEL maintainer="ksattahu@uoregon.edu"
+LABEL maintainer="nasak"
 RUN apt-get update -y
 RUN apt-get install -y python3-pip python-dev build-essential
 COPY . /web

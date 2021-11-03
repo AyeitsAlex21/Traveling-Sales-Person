@@ -1,26 +1,19 @@
 version: '3'
 
 services:
-    # app:
-    #     build: app/
-    #     command: python -u flask_app.py
-    #     volumes:
-    #         - ./app:/app/
-    #     ports:
-    #         - "5553:5000"
     restapi:
         build: api/
         command: python -u api.py
         volumes:
             - ./api:/api/
         ports:
-            - "5554:5000"
+            - "5000:5000"
     website:
         build: website/
         command: python -u website.py
         volumes:
             - ./website:/web/
         ports:
-            - "5555:5000"
+            - "5001:5000"
         depends_on:
             - restapi

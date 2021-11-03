@@ -4,7 +4,7 @@ Last Edited: 10/31/21
 Description: This template renders an embeded google map with a search bar to
 look up locations to add to a route. Users can also delete locations. Once all
 locations are inputted, users can select to calculate the optimal path. The
-page will then pass the user inputted data to be processed in the Genetic 
+page will then pass the user inputted data to be processed in the Genetic
 Algorithm and render a new map with routes displayed using Google Maps API
 DirectionService.
 Sources:
@@ -38,6 +38,7 @@ Sources:
 			margin: 0;
 			padding: 0;
 			font-family: Roboto;
+			background-color: #b6d9ff;
 		}
 
 		#button {
@@ -52,6 +53,13 @@ Sources:
 			border: thin solid #888;
 			box-shadow: 1px 1px 1px grey;
 			white-space: nowrap;
+		}
+		#button:hover {background-color: #b6d9ff}
+
+		#button:active {
+  	background-color: #b6d9ff;
+  	box-shadow: 0 5px #666;
+  	transform: translateY(4px);
 		}
 
 		#description {
@@ -181,7 +189,7 @@ Sources:
 				scaledSize: new google.maps.Size(25, 25)
 			};
 
-			// Create a new marker 
+			// Create a new marker
 			markers.push(new google.maps.Marker({
 				map: map,
 				icon: icon,
@@ -230,43 +238,45 @@ Sources:
 			console.log(JSON.stringify(locations))
 		}
 
-		function minPath() {
+		function minPath() { //calls /_min_path in website.py
 			$.getJSON('/_min_path', {vals: JSON.stringify(locations)}).done(
-				function(data) {
-					var places = data.ret;
-					var path = [];
-					for (id in places) {
-						let len = locations.length;
+				// /_min_path returns a json data structure with the locations in the order of the path that will be the least ditance
+				function(data) { //data is what the function/_min_path returns
+					var places = data.ret; //getting the place_id array from the json data structure
+					var path = []; //array to assign lng lat locations over place_id
+
+					for (id in places) { //check the place_id from the returned data
+						let len = locations.length; //check all the locations
 						for (let i = 0; i < len; i++) {
-							if (places[id] == locations[i].place_id) {
-									path.push(locations[i].position);
+							if (places[id] == locations[i].place_id) {	//place_id is the same
+									path.push(locations[i].position); //add the lng, lat to the path
 							}
 						}
 					}
-					var directionsService = new google.maps.DirectionsService();
-  					var directionsRenderer = new google.maps.DirectionsRenderer();
-					directionsRenderer.setMap(map);
-					let len = path.length;
-					directions = [];
-					waypoints = [];
+
+					var directionsService = new google.maps.DirectionsService(); //create the directions
+  				var directionsRenderer = new google.maps.DirectionsRenderer();	//render the directions
+					directionsRenderer.setMap(map);	//set the renderer map to the main map element
+					let len = path.length; //iterate through the path
+					waypoints = [];	//create an array of the locations in order besides the origin
 					for (let i = 1; i < len; i++) {
 						waypoints.push({
-							location: path[i],
-							stopover: true,
+							location: path[i],	//add waypoint
+							stopover: true,			//use waypoint
 						});
 					}
-					directionsService.route({
-				      origin: path[0],
-				      destination: path[0],
-				      waypoints: waypoints,
-				      optimizeWaypoints: false,
-				      travelMode: google.maps.TravelMode.DRIVING,
+					directionsService.route({		//creating route with diection service
+				      origin: path[0],	//path starts
+				      destination: path[0],	//path ends
+				      waypoints: waypoints,	//points between start and end in order
+				      optimizeWaypoints: false,	//do not optimize waypoints, already done
+				      travelMode: google.maps.TravelMode.DRIVING, //all calcualtions are done for driving.
 				    })
 				    .then((response) => {
-				      directionsRenderer.setDirections(response);
+				      directionsRenderer.setDirections(response);//after route is created render direction on map
 						})
 				}
-			).fail(function(err){
+			).fail(function(err){ //error occurs, log
 				console.log("Erorr!");
 				console.log(err);
 			});
@@ -274,7 +284,7 @@ Sources:
 
 	</script>
 	<!-- Set the Maps Embed API URL as the src attribute -->
-	<script 
+	<script
 		src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAiEaWFHFSoyuO3AmXwP4SIBLTH4a6pzts&libraries=places&callback=initialize"
 		async defer></script>
 

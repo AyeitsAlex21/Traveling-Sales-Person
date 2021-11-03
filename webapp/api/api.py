@@ -1,12 +1,22 @@
-# Streaming Service
-from flask import Flask, jsonify, request, abort, Response
+"""
+api.py
+Source Code restful service that computes given a resource.
+Author(s): Kale Satta-Hutton
+CIS422 F21
+Last Modifed Date: 10/31/21
+Description:
+  This file contains the compute class that takes a Resource call
+  'http://restapi:5000/' + 'compute/' + DATA
+  where the DATA is a json structure of googleapis place_id which will then be
+  ran through a variety of functions to output the optimal path.
+
+"""from flask import Flask, jsonify, request, abort, Response
 from flask_restful import Resource, Api
 import os
-import jsons
 from itsdangerous import (TimedJSONWebSignatureSerializer \
                                   as Serializer, BadSignature, \
                                   SignatureExpired)
-from main import *
+from geneticAlgorithm import *
 
 
 app = Flask(__name__)
@@ -15,36 +25,23 @@ app.config.from_object(__name__)
 
 
 class compute(Resource):
+    """
+    
+    """
     def get(self, data):
-        # app.logger.debug(data)
-        # app.logger.debug("request.args: {}".format(request.args))
+        """
+        """
         vals = jsons.loads(data)
-        # app.logger.debug("Got vals")
-        # app.logger.debug(type(vals))
-        # app.logger.debug(vals)
         place_id_list =[]
         for val in vals:
-            # app.logger.debug("val")
-            # app.logger.debug(type(val))
-            # app.logger.debug(val)
-            # app.logger.debug("val.get")
-            # app.logger.debug(val.get('place_id'))
             place_id_list.append(val.get('place_id'))
         dist_mtx, name_list = genMatrix(place_id_list)
-        # for name in name_list:
-        #     app.logger.debug(name)
-        # for r in dist_mtx:
-        #     app.logger.debug("dst_mtx")
-        #     app.logger.debug(r)
         population = parse_input((dist_mtx, name_list))
         popSize = 100
         eliteSize = 50
         mutationRate = 0.05
         generations = 75
         sorted_place_id = geneticAlgorithm(population, popSize, eliteSize, mutationRate, generations)
-        # for place in sorted_place_id:
-        #     app.logger.debug(type(place))
-        #     app.logger.debug(place)
         out =   {
                 "ret": sorted_place_id
                 }
