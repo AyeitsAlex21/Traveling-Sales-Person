@@ -79,6 +79,10 @@ Sources:
 			display: none;
 		}
 
+		#button.button {
+			align: center;
+		}
+
 		#map #infowindow-content {
 			display: inline;
 		}
@@ -221,11 +225,12 @@ Sources:
 		function displayList(locations) { // Loops through array of locations and displays dynamic list with delete button
 			LLen = locations.length; // Declare location array length
 
-			text = "<ul>";
+			text = "<table>";
+			text += "<colgroup>" + "<col class='location'>" + "<col class='button'>" + "</colgroup>"
 			for (i = 0; i < LLen; i++) {
-				text += "<li>" + locations[i].title + "<input type='button' id='button' onclick='deleteLocation(" + i + ")' value='Delete' /></li>";
+				text += "<tr>" + "<td>" + locations[i].title + "</td>" + "<td>" + "<input type='button' class='button' id='button' onclick='deleteLocation(" + i + ")' value='Delete' />" + "</td>" + "</tr>";
 			}
-			text += "</ul>";
+			text += "</table>";
 
 			// Update locationDisplay in UI with dynamic array
 			document.getElementById("locationDisplay").innerHTML = text;
