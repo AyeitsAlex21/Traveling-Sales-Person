@@ -54,7 +54,3 @@ Installation/Compiling:
 docker-compose up --build
 
 This will take care of any and all installations for you. Once the docker container is built, you can access the web application being hosted on your own machine via this url: http://localhost:5000/. There are no further setup that must be done. There are no other software dependencies required as well.
-
-TODO:
-(d) how source code files relate 
-to each other,
