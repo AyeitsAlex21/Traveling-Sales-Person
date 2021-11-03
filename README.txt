@@ -10,13 +10,12 @@ System Description:
    the same place. It does so via a genetic algorithm that pulls information from Google Maps.
 
 Subdirectories:
-  There are two subdirectories within the master folder:
-  1) GenAlgo -- this folder contains all of the files for the genetic algorithm, as well as the google maps API file that makes the actual requests.
-  2) webapp -- this folder contains two folders containing all the files of the web application
-     i) api -- this folder contains...
+  There is one subdirectory within the master folder:
+  1) webapp -- this folder contains two folders containing all the files of the program
+     i) api -- this folder contains all of the genetic algorithm files along with the Google Maps API request file. __pycache__ is from the python interpreter. The Dockerfile is the file used to create the container in Docker
+     ii) website -- this folder contains all of the web application folders. It contains a templates folder, which contains all of the .html files that are the content of the web application. There is another Dockerfile for a second container. There is also a website.py file for Flask
 
 TODO:
 v. Necessary steps to compile the source code and run the program 
 vi. Any additional required setup 
 vii. Software dependencies such as the version of the compiler 
-viii. A brief description of what is in each subdirectory in the directory structure 
