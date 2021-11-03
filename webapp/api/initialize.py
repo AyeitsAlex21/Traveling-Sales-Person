@@ -1,6 +1,7 @@
 """
 Source Code for the initialization used in the Genetic Algorithm, CIS422 FA21
-Author(s): Eric Stoltz, Alex Summers, Sarah Kitten
+Author(s): Sarah Kitten, Eric Stoltz, Alex Summers
+Group Name: NASAK
 Last Edited: 10/28/21
 Sources:
     Base version of the code:
