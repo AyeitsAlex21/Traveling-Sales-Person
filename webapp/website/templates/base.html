@@ -9,6 +9,9 @@ Algorithm and render a new map with routes displayed using Google Maps API
 DirectionService.
 Sources:
 	https://developers.google.com/maps/documentation/embed/get-started
+	https://developers.google.com/maps/documentation/javascript/examples/places-placeid-finder#maps_places_placeid_finder-javascript
+	https://developers.google.com/maps/documentation/places/web-service/place-id
+	https://developers.google.com/maps/documentation/javascript/directions
      -->
 
 <!doctype html>
@@ -112,7 +115,7 @@ Sources:
 <body>
 	<!-- Displays Add Location and Calculate Path button controls -->
 	<div style="width:1000px;" id="bar">
-		<button id="button" onClick="addMyMarker()" class="controls">Add Location</button>
+		<button id="button" onClick="addLocation()" class="controls">Add Location</button>
 		<button id="button" onClick="minPath()" class="controls">Calculate Path</button>
 
 		<!-- Where currently added locations will display -->
@@ -179,7 +182,7 @@ Sources:
 				map.fitBounds(bounds);
 			});
 		}
-		function addMyMarker() { // Function that will add markers on button click
+		function addLocation() { // Function that will add markers on button click
 			// Initialize marker icon
 			var icon = {
 				url: "http://maps.google.com/mapfiles/ms/icons/red-dot.png",

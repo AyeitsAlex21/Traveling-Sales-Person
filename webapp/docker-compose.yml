@@ -6,14 +6,12 @@ services:
         command: python -u api.py
         volumes:
             - ./api:/api/
-        ports:
-            - "5000:5000"
     website:
         build: website/
         command: python -u website.py
         volumes:
             - ./website:/web/
         ports:
-            - "5001:5000"
+            - "5000:5000"
         depends_on:
             - restapi

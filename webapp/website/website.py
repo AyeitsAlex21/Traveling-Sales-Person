@@ -1,20 +1,19 @@
 """
 website.py
 Source Code for flask webpage interaction between html/javascript and Genetic Algorithm to Google Maps API.
-Author(s): Kale Satta-Hutton, Anna Nguyen
+Author(s): Anna Nguyen, Kale Satta-Hutton
 Group: NASAK
 CIS422 F21
-Last Modifed Date: 10/31/21
+Last Modifed Date: 11/3/21
 Description:
   This file contains two routes. The first route renders base.html when the user first navigates to the landing page.
   The second function, _min_path, gets the array of locations passsed in from the UI containing the place name, place
   location (longitude, latitude) and place ID. This will be passed to the web app API to be processed by the GenAlgo.
 """
 import flask
-from urllib.parse import urlparse, urljoin
-from flask import (Flask, request, render_template, redirect, url_for, flash,
-                    abort, session)
-from flask import Flask, render_template, request
+from flask import (Flask, request, render_template) # Flask instnatiates the flask app
+                                                    # request generates a request
+                                                    # render template renders an html file.
 import requests # allows the sending of HTTP requests
 
 
@@ -34,11 +33,11 @@ def index():
 @app.route("/_min_path", methods=["GET"])
 def _min_path():
     """
-    Creates a call to the restful api container
+    Creates a call to the restful api container with a resource and returns the data.
     """
-    res = request.args.get('vals') # Retrieve jsonified array of locations from website
-    r = requests.get('http://restapi:5000/' + 'compute/' + res) # Passes data into API
-    return r.text # Return processed data
+    resource = request.args.get('vals') # Retrieve jsonified array of locations from website
+    out = requests.get('http://restapi:5000/' + 'compute/' + resource) # Passes data into API
+    return out.text # Return processed data
 
 
 if __name__ == "__main__":
