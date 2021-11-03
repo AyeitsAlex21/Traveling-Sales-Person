@@ -45,8 +45,8 @@ def matingPool(population, selectionResults):
 
     Called by: nextGeneration
     """
-    matingpool = []
-    for i in range(0, len(selectionResults)):
+    matingpool = [] # list of routes to mate together
+    for i in range(0, len(selectionResults)): # loop to the elite size of the population
         index = selectionResults[i]
         matingpool.append(population[index])
     return matingpool
@@ -64,80 +64,84 @@ def breed(parent1, parent2):
     DOWN BELOW IS NOT THE GENETIC EDGE RECOMBINATION WE NEED TO CHANGE BUT MAYBE
     TEST WITH THIS IMPLEMENTATION
     """
-    child = []
-    full_size = len(parent1)
-    edge_map = []
-    for i in range(full_size):
-        edge_map.append([])
+    child = [] # initialize child list
+    full_size = len(parent1) # get the length of the route
+    edge_map = [] # initialize the edge map list
+    for i in range(full_size): # loop up to length of route
+        edge_map.append([]) # initialize the 2d aspect of an edge map to empty lists
 
     # this for loop makes an edge map
-    for i in range(full_size):
-        right_neighbor = i
-        left_neighbor = i
+    for i in range(full_size): # loop up to size of the route
+        right_neighbor = i # initialize index for left neighbor
+        left_neighbor = i # initialize index for right neighbor
 
-        if (right_neighbor + 1 == full_size):
-            right_neighbor = 0
+        if (right_neighbor + 1 == full_size): # if right neighbor + 1 would index outside the list
+            right_neighbor = 0 # set right neighbor to 0
         else:
-            right_neighbor += 1
-        if (left_neighbor == 0):
-            left_neighbor = -1
+            right_neighbor += 1 # otherwise just add one to the right neighbor to be a right neighbor
+        if (left_neighbor == 0):# if left_neighbor - 1 would index outside the list
+            left_neighbor = -1 # make left the last index of the list
         else:
-            left_neighbor -= 1
+            left_neighbor -= 1 # otherwise just minus one to the left neighbor to be a left neighbor
 
+        # if in parent two the right neighbor is not part if of the i'th city's neighbor list
         if (parent2[right_neighbor] not in edge_map[parent2[i].num]):
-            edge_map[parent2[i].num].append(parent2[right_neighbor])
+            edge_map[parent2[i].num].append(parent2[right_neighbor]) # add neighbor to i'th city's neighbor list
+        # if in parent two the left neighbor is not part if of the i'th city's neighbor list
         if (parent2[left_neighbor] not in edge_map[parent2[i].num]):
-            edge_map[parent2[i].num].append(parent2[left_neighbor])
+            edge_map[parent2[i].num].append(parent2[left_neighbor]) # add neighbor to i'th city's neighbor list
+        # if in parent one the right neighbor is not part if of the i'th city's neighbor list
         if (parent1[right_neighbor] not in edge_map[parent1[i].num]):
-            edge_map[parent1[i].num].append(parent1[right_neighbor])
+            edge_map[parent1[i].num].append(parent1[right_neighbor]) # add neighbor to i'th city's neighbor list
+        # if in parent one the left neighbor is not part if of the i'th city's neighbor list
         if (parent1[left_neighbor] not in edge_map[parent1[i].num]):
-            edge_map[parent1[i].num].append(parent1[left_neighbor])
+            edge_map[parent1[i].num].append(parent1[left_neighbor]) # add neighbor to i'th city's neighbor list
 
-    parents = [parent1, parent2]
-    gene = parents[int(random.random() * 2)][0]
-    size = 0
+    parents = [parent1, parent2] # creating a temp parents list
+    gene = parents[int(random.random() * 2)][0] # randomly select first city from both parents
+    size = 0 # set initiail size of child to 0
 
     while(1):
-        child.append(gene)
-        size += 1
+        child.append(gene) # add the city to the child list
+        size += 1 # add one to children size
         # Break when child is as big as parent
         if (size >= full_size):
             break
 
         # remove gene from neighbor list
-        for i in range(full_size):
-            sub_len = len(edge_map[i])
-            for j in range(sub_len):
-                if (edge_map[i][j] == gene):
-                    edge_map[i].pop(j)
-                    break
+        for i in range(full_size): # loop up to the parent size
+            sub_len = len(edge_map[i]) # get the number of neighbors
+            for j in range(sub_len): # loop up to the number of neighbors
+                if (edge_map[i][j] == gene): # if found the gene we are trying to remove
+                    edge_map[i].pop(j) # remove from edge map
+                    break # break from the inner loop to look at another city's neighbor list
 
         # if gene's neighbor list is empty randomly select from city's not in child
         if (len(edge_map[gene.num]) == 0):
-            temp = []
-            for i in range(full_size):
-                if(parent1[i] not in child):
-                    temp.append(parent1[i])
-            Z = temp[int(random.random() * len(temp))]
+            temp = [] # temp list containing city's who neighbor lists above 0
+            for i in range(full_size): # loop up to the parents size
+                if(parent1[i] not in child): # if city is not in child list yet
+                    temp.append(parent1[i]) # append the city to the temp list
+            Z = temp[int(random.random() * len(temp))] # randomly select a city with more than 0 neighbors
 
         # if not empty find gene's neighbor that has the least neighbors
         else:
-            minimum = 5
-            sub_len = len(edge_map[gene.num])
-            temp = []
-            for i in range(sub_len):
-                neighbor = edge_map[gene.num][i]
+            minimum = 5 # a node can have max of 4 neighbors so start minimum high
+            sub_len = len(edge_map[gene.num]) # number of neighbors this city has
+            temp = [] # temp list containing city's with the least amount of neighbors
+            for i in range(sub_len): # loop up to the number of neighbors this city has
+                neighbor = edge_map[gene.num][i] # get the neighboring city
                 if (len(edge_map[neighbor.num]) < minimum): # if new min is found reset list add new min neighbor
-                    minimum = len(edge_map[neighbor.num])
-                    temp = []
-                    temp.append(neighbor)
-                elif(len(edge_map[neighbor.num]) == minimum): # if a tie occurs randomly decide
-                    temp.append(neighbor)
+                    minimum = len(edge_map[neighbor.num]) # get the number neighbors the new min has
+                    temp = [] # reset temp list
+                    temp.append(neighbor) # add the new minimum neighbor to temp list
+                elif(len(edge_map[neighbor.num]) == minimum): # if the same amount of neighbors as current min
+                    temp.append(neighbor) # add neighbor to temp list
             Z = temp[int(random.random() * len(temp))] # randomly decide if multiple neighbors
 
-        gene = Z
+        gene = Z # assign the new city to be appended to the child at the start of the loop
 
-    return child
+    return child # return the child route
 
 
 def breedPopulation(matingpool, eliteSize):
@@ -170,16 +174,18 @@ def mutate(individual, mutationRate):
 
     Called by: mutatePopulation
     """
-    if (random.random() < mutationRate):
+    if (random.random() < mutationRate): # mutationRate chance for this if condition to be true
+        # randomly index into individual route but excluding the first and last index
         ind1 = int(random.random() * (len(individual) - 2)) + 1
+        # randomly index to an index above ind1 but not outside list length
         ind2 = ind1 + int(random.random() * (len(individual) - ind1))
 
-        if (ind1 == ind2):
-            ind2 += 2
-        elif (ind1 + 1 == ind2):
-            ind2 += 1
-        individual[ind1:ind2] = individual[ind1:ind2][::-1]
-    return individual
+        if (ind1 == ind2):  # if the two indexes equal
+            ind2 += 2 # add two to ind2 so something can change when mutating
+        elif (ind1 + 1 == ind2): # if ind2 is one more then ind1
+            ind2 += 1 # add one to ind2 so something can change when mutating
+        individual[ind1:ind2] = individual[ind1:ind2][::-1] # inverse subsequence of the individual from ind1 to ind2
+    return individual # return the mutated individual
 
 
 def mutatePopulation(population, mutationRate):
