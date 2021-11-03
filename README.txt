@@ -41,8 +41,10 @@ How to use this application:
 Subdirectories:
   There is one subdirectory within the master folder:
   1) webapp -- this folder contains two folders containing all the files of the program
-     i) api -- this folder contains all of the genetic algorithm files along with the Google Maps API request file. __pycache__ is from the python interpreter. The Dockerfile is the file used to create the container in Docker
-     ii) website -- this folder contains all of the web application folders. It contains a templates folder, which contains all of the .html files that are the content of the web application. There is another Dockerfile for a second container. There is also a website.py file for Flask
+     i) api -- this folder contains all of the genetic algorithm files along with the Google Maps API request file. __pycache__ is from the python interpreter. The Dockerfile is the
+                 file used to create the container in Docker
+     ii) website -- this folder contains all of the web application folders. It contains a templates folder, which contains all of the .html files that are the content of the web
+                 application. There is another Dockerfile for a second container. There is also a website.py file for Flask
 
 ####################################################################################################################################################################################
 
