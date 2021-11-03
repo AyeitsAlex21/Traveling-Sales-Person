@@ -5,7 +5,9 @@ Creation Date: 10/30/21
 File Description:  This is the master README. It explains what is in the directory, along with some other information
 
 System Description:
-   Our system is composed of 3 modules. Genetic Algorithm, Web Application, and Google Maps API. The purpose of this system is to provide a near-optimal routing algorithm. The program accepts several locations (via a search bar or point-and-click) and will generate a path of minimum distance between the routes, starting from the first location input and ending in the same place. It does so via a genetic algorithm that pulls information from Google Maps.
+   Our system is composed of 3 modules. Genetic Algorithm, Web Application, and Google Maps API. The purpose of this system is to provide a near-optimal routing algorithm. The program 
+   accepts several locations (via a search bar or point-and-click) and will generate a path of minimum distance between the routes, starting from the first location input and ending in 
+   the same place. It does so via a genetic algorithm that pulls information from Google Maps.
 
 Subdirectories:
   There are two subdirectories within the master folder:
