@@ -21,20 +21,20 @@ def selection(popRanked, eliteSize):
 
     Called by: nextGeneration
     """
-    selectionResults = []
-    df = pd.DataFrame(np.array(popRanked), columns=["Index", "Fitness"])
-    df['cum_sum'] = df.Fitness.cumsum()
-    df['cum_perc'] = 100 * df.cum_sum / df.Fitness.sum()
+    selectionResults = [] # list of indexes that represent the mating pool
+    df = pd.DataFrame(np.array(popRanked), columns=["Index", "Fitness"]) # create 3d mutable array
+    df['cum_sum'] = df.Fitness.cumsum() # calculating relative fitness
+    df['cum_perc'] = 100 * df.cum_sum / df.Fitness.sum()  # calculating relative fitness
 
-    for i in range(0, eliteSize):
-        selectionResults.append(popRanked[i][0])
-    for i in range(0, len(popRanked) - eliteSize):
-        pick = 100 * random.random()
-        for i in range(0, len(popRanked)):
-            if pick <= df.iat[i, 3]:
-                selectionResults.append(popRanked[i][0])
+    for i in range(0, eliteSize): # loop up to the elite size
+        selectionResults.append(popRanked[i][0]) # add every elite individual to selection result list
+    for i in range(0, len(popRanked) - eliteSize): # loop through remaining size of population
+        pick = 100 * random.random() # randomly get a number 0 to 100
+        for i in range(0, len(popRanked)): # loop through the population
+            if pick <= df.iat[i, 3]: # if random number less then weight of the mate
+                selectionResults.append(popRanked[i][0]) # append route id break inner loop
                 break
-    return selectionResults
+    return selectionResults # return a list of indexes that represent the mating pool
 
 def matingPool(population, selectionResults):
     """
@@ -47,9 +47,9 @@ def matingPool(population, selectionResults):
     """
     matingpool = [] # list of routes to mate together
     for i in range(0, len(selectionResults)): # loop to the elite size of the population
-        index = selectionResults[i]
-        matingpool.append(population[index])
-    return matingpool
+        index = selectionResults[i] # index is now id of the route
+        matingpool.append(population[index]) # append the route to mating pool
+    return matingpool # return the list of parent routes
 
 
 def breed(parent1, parent2):
@@ -153,17 +153,18 @@ def breedPopulation(matingpool, eliteSize):
 
     Called by: nextGeneration
     """
-    children = []
-    length = len(matingpool) - eliteSize
+    children = [] # initialize list of children
+    length = len(matingpool) - eliteSize # get the remaining size of the population to be filled
+    # return random subsequence of the matingpool the size of remaining size
     pool = random.sample(matingpool, len(matingpool))
 
-    for i in range(0, eliteSize):
-        children.append(matingpool[i])
+    for i in range(0, eliteSize): # loop the elite size of the population
+        children.append(matingpool[i]) # append the
 
-    for i in range(0, length):
-        child = breed(pool[i], pool[len(matingpool) - i - 1])
-        children.append(child)
-    return children
+    for i in range(0, length): # loop to remaining size of the population to be filled
+        child = breed(pool[i], pool[len(matingpool) - i - 1]) # breed two parents to get a child
+        children.append(child) # append the child to the children list
+    return children # return children list
 
 
 def mutate(individual, mutationRate):
@@ -196,12 +197,12 @@ def mutatePopulation(population, mutationRate):
 
     Called by: nextGeneration
     """
-    mutatedPop = []
+    mutatedPop = [] # initialize list of the mutated population
 
-    for ind in range(0, len(population)):
-        mutatedInd = mutate(population[ind], mutationRate)
-        mutatedPop.append(mutatedInd)
-    return mutatedPop
+    for ind in range(0, len(population)): # loop up to population size
+        mutatedInd = mutate(population[ind], mutationRate) # call mutate on each individual of the population
+        mutatedPop.append(mutatedInd) # append the new individual to the mutatedPop
+    return mutatedPop # return a list of the mutated routes
 
 def nextGeneration(currentGen, eliteSize, mutationRate):
     """
@@ -212,9 +213,9 @@ def nextGeneration(currentGen, eliteSize, mutationRate):
 
     Called by: geneticAlgorithm
     """
-    popRanked = rankRoutes(currentGen)
-    selectionResults = selection(popRanked, eliteSize)
-    matingpool = matingPool(currentGen, selectionResults)
-    children = breedPopulation(matingpool, eliteSize)
-    nextGeneration = mutatePopulation(children, mutationRate)
-    return nextGeneration
+    popRanked = rankRoutes(currentGen) # sorts the routes from smallest distance to biggest
+    selectionResults = selection(popRanked, eliteSize) #
+    matingpool = matingPool(currentGen, selectionResults) # selects route ID's to breed
+    children = breedPopulation(matingpool, eliteSize) # breeds the population
+    nextGeneration = mutatePopulation(children, mutationRate) # mutates the population
+    return nextGeneration # returns the new generation of routes
