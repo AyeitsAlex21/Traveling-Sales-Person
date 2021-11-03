@@ -78,11 +78,12 @@ def genMatrix(addressList):
         for _ in range(n):
             matrix[j].append(0)
 
+    # update matrix with actual distances
     for j in range(n):
         for i in range(n):
             if i != j:  # distance from x to x is 0
                 distance = get_distance(addressList[i], addressList[j])  # api call
-                matrix[j][i] = distance  # insert distance
+                matrix[j][i] = distance  # insert distance into correct coordinate
 
     if any(-1 in row for row in matrix):  # make sure there are no invalid distances
         print("WARNING: Distance matrix contains invalid distance (-1). API function could not grab distance. Program will continue")
