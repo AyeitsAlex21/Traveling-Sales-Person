@@ -47,10 +47,14 @@ Subdirectories:
 ####################################################################################################################################################################################
 
 Installation/Compiling:
-   This program does not need to be installed or compiled to access. It is a web application hosted via a docker hosting platform called Digital Ocean. The only thing that you need worry about is make sure that your browser is up to date. Any browser will work, but firefox is recommended. To access the website, you may visit it with this url: http://143.110.234.23:5000/. 
+   This program does not need to be installed or compiled to access. It is a web application hosted via a docker hosting platform called Digital Ocean. The only thing that you need
+     worry about is make sure that your browser is up to date. Any browser will work, but firefox is recommended. To access the website, you may visit it with this url:
+     http://143.110.234.23:5000/. 
    
-   If you would like to compile and host this web application on your own machine, you must install Docker from this website: https://docs.docker.com/get-docker/. After Docker is installed, from within the webapp folder, open up a terminal. Then type:
+   If you would like to compile and host this web application on your own machine, you must install Docker from this website: https://docs.docker.com/get-docker/. After Docker is
+     installed, from within the webapp folder, open up a terminal. Then type:
 
 docker-compose up --build
 
-This will take care of any and all installations for you. Once the docker container is built, you can access the web application being hosted on your own machine via this url: http://localhost:5000/. There are no further setup that must be done. There are no other software dependencies required as well.
+This will take care of any and all installations for you. Once the docker container is built, you can access the web application being hosted on your own machine via this url:
+  http://localhost:5000/. There are no further setup that must be done. There are no other software dependencies required as well.
