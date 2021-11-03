@@ -1,6 +1,7 @@
 """
 Source Code for main used in the Genetic Algorithm, CIS422 FA21
-Author(s): Eric Stoltz, Sarah Kitten, Alex Summers
+Author(s): Sarah Kitten, Eric Stoltz, Alex Summers
+Group Name: NASAK
 Last Edited: 10/28/21
 Sources:
     Base version of the code:
